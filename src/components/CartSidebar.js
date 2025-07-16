@@ -13,8 +13,7 @@ const CartSidebar = () => {
     updateQuantity, 
     clearCart, 
     closeCart, 
-    recentOrders, 
-    addRecentOrder 
+    recentOrders
   } = useCart();
   const [isCheckingOut, setIsCheckingOut] = useState(false);
   const [customerInfo, setCustomerInfo] = useState({
@@ -46,6 +45,8 @@ const CartSidebar = () => {
     }
 
     setIsCheckingOut(true);
+    setIsLoading(true);
+    setOrderError(null);
     
     try {
       // Create orders for each cart item
@@ -66,75 +67,65 @@ const CartSidebar = () => {
       // Send each order to the backend
       const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:5000';
       
-      setIsLoading(true);
-      setOrderError(null);
+      const orderPromises = orders.map(order => 
+        fetch(`${apiUrl}/api/orders`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(order),
+        })
+      );
 
-      try {
-        const orderPromises = orders.map(order => 
-          fetch(`${apiUrl}/api/orders`, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(order),
-          })
+      const responses = await Promise.all(orderPromises);
+      const allSuccessful = responses.every(response => response.ok);
+
+      if (allSuccessful) {
+        // Extract order IDs from successful responses
+        const orderIds = await Promise.all(
+          responses.map(response => response.json())
         );
-
-        const responses = await Promise.all(orderPromises);
-        const allSuccessful = responses.every(response => response.ok);
-
-        if (allSuccessful) {
-          // Extract order IDs from successful responses
-          const orderIds = await Promise.all(
-            responses.map(response => response.json())
-          );
-          
-          // Show success message with order IDs
-          setOrderSuccess(true);
-          setOrderIds(orderIds.map(order => order.id));
-          
-          // Clear cart
-          clearCart();
-          
-          // Auto-open order tracking after 2 seconds
-          setTimeout(() => {
-            setOrderSuccess(false);
-            handleOrderPlaced(orderIds.map(order => order.id));
-          }, 2000);
-        } else {
-          throw new Error('Some orders failed to process');
-        }
-      } catch (error) {
-        console.error('Error placing orders:', error);
         
-        // Check if we're in production mode
-        const isProduction = process.env.NODE_ENV === 'production';
+        // Show success message with order IDs
+        setOrderSuccess(true);
+        setOrderIds(orderIds.map(order => order.id));
         
-        if (isProduction) {
-          // In production, show a user-friendly message
-          setOrderError('Unable to process your order at this time. Please try again later or contact support.');
-        } else {
-          // In development, show detailed error
-          if (error.name === 'AbortError') {
-            setOrderError('Order request timed out. Please check your connection and try again.');
-          } else {
-            setOrderError('Unable to connect to the order system. Please ensure the backend server is running.');
-          }
-        }
+        // Clear cart
+        clearCart();
         
-        // Clear error after 5 seconds
+        // Auto-open order tracking after 2 seconds
         setTimeout(() => {
-          setOrderError(null);
-        }, 5000);
-      } finally {
-        setIsLoading(false);
-        setIsCheckingOut(false);
+          setOrderSuccess(false);
+          handleOrderPlaced(orderIds.map(order => order.id));
+        }, 2000);
+      } else {
+        throw new Error('Some orders failed to process');
       }
     } catch (error) {
-      console.error('Error during checkout:', error);
-      setOrderError('Unexpected error occurred. Please try again.');
-      setIsCheckingOut(false);
+      console.error('Error placing orders:', error);
+      
+      // Check if we're in production mode
+      const isProduction = process.env.NODE_ENV === 'production';
+      
+      if (isProduction) {
+        // In production, show a user-friendly message
+        setOrderError('Unable to process your order at this time. Please try again later or contact support.');
+      } else {
+        // In development, show detailed error
+        if (error.name === 'AbortError') {
+          setOrderError('Order request timed out. Please check your connection and try again.');
+        } else {
+          setOrderError('Unable to connect to the order system. Please ensure the backend server is running.');
+        }
+      }
+      
+      // Clear error after 5 seconds
+      setTimeout(() => {
+        setOrderError(null);
+      }, 5000);
+    } finally {
       setIsLoading(false);
+      setIsCheckingOut(false);
     }
   };
 
