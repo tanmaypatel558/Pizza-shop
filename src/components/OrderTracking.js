@@ -2,20 +2,127 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { io } from 'socket.io-client';
 import './OrderTracking.css';
 
+// Mock tracking data for demo orders
+const generateMockTrackingData = (orderId) => {
+  const pizzaNames = ['Margherita Pizza', 'Pepperoni Deluxe', 'Vegetarian Supreme', 'BBQ Chicken', 'Hawaiian Special'];
+  const addresses = ['123 Main St, San Francisco, CA', '456 Oak Ave, Oakland, CA', '789 Pine Rd, Berkeley, CA'];
+  const names = ['John Doe', 'Jane Smith', 'Mike Johnson', 'Sarah Wilson', 'David Brown'];
+  
+  const randomPizza = pizzaNames[Math.floor(Math.random() * pizzaNames.length)];
+  const randomAddress = addresses[Math.floor(Math.random() * addresses.length)];
+  const randomName = names[Math.floor(Math.random() * names.length)];
+  
+  // Generate realistic timestamps
+  const now = new Date();
+  const orderTime = new Date(now.getTime() - (Math.random() * 30 + 10) * 60000); // 10-40 minutes ago
+  const prepTime = new Date(orderTime.getTime() + 5 * 60000); // 5 minutes after order
+  const ovenTime = new Date(orderTime.getTime() + 15 * 60000); // 15 minutes after order
+  const estimatedDelivery = new Date(now.getTime() + (Math.random() * 20 + 10) * 60000); // 10-30 minutes from now
+  
+  return {
+    id: orderId,
+    pizza: {
+      name: randomPizza,
+      image: "https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80"
+    },
+    quantity: Math.floor(Math.random() * 3) + 1,
+    totalPrice: (Math.random() * 20 + 15).toFixed(2),
+    status: 'in-preparation',
+    estimatedDelivery: estimatedDelivery.toISOString(),
+    customerInfo: {
+      name: randomName,
+      phone: `(${Math.floor(Math.random() * 900) + 100}) ${Math.floor(Math.random() * 900) + 100}-${Math.floor(Math.random() * 9000) + 1000}`,
+      address: randomAddress
+    },
+    statusHistory: [
+      {
+        status: 'received',
+        label: 'Order Received',
+        icon: '📨',
+        completed: true,
+        current: false,
+        timestamp: orderTime.toISOString()
+      },
+      {
+        status: 'in-preparation',
+        label: 'Preparing Your Order',
+        icon: '👨‍🍳',
+        completed: true,
+        current: true,
+        timestamp: prepTime.toISOString()
+      },
+      {
+        status: 'in-oven',
+        label: 'In the Oven',
+        icon: '🔥',
+        completed: false,
+        current: false,
+        timestamp: null
+      },
+      {
+        status: 'ready',
+        label: 'Ready for Pickup',
+        icon: '✅',
+        completed: false,
+        current: false,
+        timestamp: null
+      },
+      {
+        status: 'out-for-delivery',
+        label: 'Out for Delivery',
+        icon: '🚚',
+        completed: false,
+        current: false,
+        timestamp: null
+      },
+      {
+        status: 'delivered',
+        label: 'Delivered',
+        icon: '🎉',
+        completed: false,
+        current: false,
+        timestamp: null
+      }
+    ]
+  };
+};
+
 const OrderTracking = ({ orderId, onClose }) => {
   const [trackingData, setTrackingData] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [inputOrderId, setInputOrderId] = useState('');
   const [currentOrderId, setCurrentOrderId] = useState(orderId || '');
+  const [isDemoOrder, setIsDemoOrder] = useState(false);
 
   const fetchTrackingData = useCallback(async () => {
     try {
       setLoading(true);
       setError(null);
       
+      // Check if this is a demo order
+      if (currentOrderId.startsWith('demo-')) {
+        setIsDemoOrder(true);
+        // Generate mock tracking data for demo orders
+        const mockData = generateMockTrackingData(currentOrderId);
+        setTrackingData(mockData);
+        setLoading(false);
+        return;
+      }
+      
+      setIsDemoOrder(false);
+      
+      // Try to fetch from backend with timeout
       const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:5000';
-      const response = await fetch(`${apiUrl}/api/orders/${currentOrderId}/track`);
+      
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 5000); // 5 second timeout
+      
+      const response = await fetch(`${apiUrl}/api/orders/${currentOrderId}/track`, {
+        signal: controller.signal
+      });
+      
+      clearTimeout(timeoutId);
       
       if (response.ok) {
         const data = await response.json();
@@ -25,7 +132,12 @@ const OrderTracking = ({ orderId, onClose }) => {
       }
     } catch (error) {
       console.error('Error fetching tracking data:', error);
-      setError('Failed to fetch tracking data');
+      
+      if (error.name === 'AbortError') {
+        setError('Request timed out. Please try again.');
+      } else {
+        setError('Failed to fetch tracking data. Please check your order ID.');
+      }
     } finally {
       setLoading(false);
     }
@@ -37,26 +149,41 @@ const OrderTracking = ({ orderId, onClose }) => {
       return;
     }
 
-    // Initialize socket connection
-          const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:5000';
-      const socketConnection = io(apiUrl);
+    // Don't setup socket connection for demo orders
+    if (currentOrderId.startsWith('demo-')) {
+      fetchTrackingData();
+      return;
+    }
 
-    // Join customer room for real-time updates
-    socketConnection.emit('join-customer', currentOrderId);
+    // Initialize socket connection for real orders
+    const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+    
+    let socketConnection;
+    
+    try {
+      socketConnection = io(apiUrl);
 
-    // Listen for real-time order updates
-    socketConnection.on('order-status-updated', (updatedOrder) => {
-      if (updatedOrder.id === currentOrderId) {
-        fetchTrackingData();
-      }
-    });
+      // Join customer room for real-time updates
+      socketConnection.emit('join-customer', currentOrderId);
+
+      // Listen for real-time order updates
+      socketConnection.on('order-status-updated', (updatedOrder) => {
+        if (updatedOrder.id === currentOrderId) {
+          fetchTrackingData();
+        }
+      });
+    } catch (error) {
+      console.error('Socket connection failed:', error);
+    }
 
     // Initial fetch
     fetchTrackingData();
 
     return () => {
-      socketConnection.emit('leave-customer', currentOrderId);
-      socketConnection.disconnect();
+      if (socketConnection) {
+        socketConnection.emit('leave-customer', currentOrderId);
+        socketConnection.disconnect();
+      }
     };
   }, [currentOrderId, fetchTrackingData]);
 
@@ -127,7 +254,7 @@ const OrderTracking = ({ orderId, onClose }) => {
                 value={inputOrderId}
                 onChange={(e) => setInputOrderId(e.target.value)}
                 onKeyPress={handleKeyPress}
-                placeholder="Enter your order ID (e.g., e084ce3c-24da-4c71...)"
+                placeholder="Enter your order ID (e.g., demo-abc123...)"
                 className="order-id-input"
               />
               <button 
@@ -141,6 +268,7 @@ const OrderTracking = ({ orderId, onClose }) => {
             <div className="help-text">
               <p>💡 Your order ID was provided when you placed your order.</p>
               <p>📱 Check your confirmation message or recent orders.</p>
+              <p>🍕 Demo orders start with "demo-" prefix.</p>
             </div>
           </div>
         </div>
@@ -199,6 +327,13 @@ const OrderTracking = ({ orderId, onClose }) => {
           <h2>Order Tracking</h2>
           <button className="close-btn" onClick={onClose}>×</button>
         </div>
+
+        {/* Demo Mode Notification */}
+        {isDemoOrder && (
+          <div className="demo-notification">
+            <p>🍕 Demo Mode: Simulated order tracking</p>
+          </div>
+        )}
 
         <div className="tracking-content">
           {/* Order Summary */}
@@ -286,9 +421,9 @@ const OrderTracking = ({ orderId, onClose }) => {
           <div className="live-status">
             <div className="live-indicator">
               <div className="pulse"></div>
-              <span>Live Updates Active</span>
+              <span>{isDemoOrder ? 'Demo Mode Active' : 'Live Updates Active'}</span>
             </div>
-            <p>Your order status will update automatically</p>
+            <p>{isDemoOrder ? 'Simulated order tracking for demonstration' : 'Your order status will update automatically'}</p>
           </div>
         </div>
       </div>
