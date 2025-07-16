@@ -2,6 +2,88 @@ import React, { useState, useEffect } from 'react';
 import './FeaturedItems.css';
 import PizzaModal from './PizzaModal';
 
+// Production fallback data when backend is not available
+const productionFallbackItems = [
+  {
+    id: 1,
+    name: "PEPPERONI PIE",
+    price: "$28.00",
+    rating: "95%",
+    reviews: "(452)",
+    badge: "#1 Most liked",
+    image: "https://images.pexels.com/photos/5175556/pexels-photo-5175556.jpeg",
+    description: "Lunch size pizza - feeds one hungry pizza lover - our pepperoni: red sauce, 48 pepperonis",
+    ingredients: ["Red sauce", "Mozzarella cheese", "Pepperoni", "Italian herbs"],
+    category: "pizza",
+    isActive: true
+  },
+  {
+    id: 2,
+    name: "FORMAGGIO PIE",
+    price: "$21.00",
+    rating: "95%",
+    reviews: "(280)",
+    badge: "#3 Most liked",
+    image: "https://images.unsplash.com/photo-1513104890138-7c749659a591?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
+    description: "Classic cheese pizza with our signature red sauce and premium mozzarella cheese",
+    ingredients: ["Red sauce", "Premium mozzarella cheese", "Italian herbs", "Olive oil"],
+    category: "pizza",
+    isActive: true
+  },
+  {
+    id: 3,
+    name: "FUNGHI PIE",
+    price: "$28.00",
+    rating: "96%",
+    reviews: "(331)",
+    badge: "#2 Most liked",
+    image: "https://images.unsplash.com/photo-1574071318508-1cdbab80d002?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
+    description: "Mushroom lover's dream with fresh mushrooms, mozzarella, and our signature red sauce",
+    ingredients: ["Red sauce", "Mozzarella cheese", "Fresh mushrooms", "Italian herbs", "Garlic"],
+    category: "pizza",
+    isActive: true
+  },
+  {
+    id: 4,
+    name: "Coke",
+    price: "$10.00",
+    rating: "95%",
+    reviews: "(500)",
+    badge: "Most liked drink",
+    image: "https://images.pexels.com/photos/39720/pexels-photo-39720.jpeg",
+    description: "Ice-cold Coca Cola served chilled",
+    ingredients: ["Coca Cola", "Ice"],
+    category: "drink",
+    isActive: true
+  },
+  {
+    id: 5,
+    name: "Meat Pizza",
+    price: "$25.00",
+    rating: "95%",
+    reviews: "(600)",
+    badge: "Spicy pizza",
+    image: "https://images.pexels.com/photos/825661/pexels-photo-825661.jpeg",
+    description: "Loaded with extra meat for the carnivore in you",
+    ingredients: ["Red sauce", "Mozzarella cheese", "Pepperoni", "Sausage", "Ham"],
+    category: "pizza",
+    isActive: true
+  },
+  {
+    id: 6,
+    name: "Cheese Pizza",
+    price: "$80.00",
+    rating: "96%",
+    reviews: "(600)",
+    badge: "#4 Most liked Pizza",
+    image: "https://images.pexels.com/photos/32952940/pexels-photo-32952940.jpeg",
+    description: "Tasty and crunchy cheese pizza",
+    ingredients: ["Red sauce", "Premium mozzarella cheese", "Italian herbs"],
+    category: "pizza",
+    isActive: true
+  }
+];
+
 const FeaturedItems = () => {
   const [selectedPizza, setSelectedPizza] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -10,6 +92,7 @@ const FeaturedItems = () => {
   const [selectedFilter, setSelectedFilter] = useState('all');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [usingFallback, setUsingFallback] = useState(false);
 
   // Available filter categories
   const filterCategories = [
@@ -42,9 +125,20 @@ const FeaturedItems = () => {
       // Use environment variable for API URL or fallback to localhost for development
       const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:5000';
       
+      // Check if we're in production and no API URL is set
+      const isProduction = process.env.NODE_ENV === 'production';
+      const hasApiUrl = process.env.REACT_APP_API_URL;
+      
+      if (isProduction && !hasApiUrl) {
+        console.log('Production mode detected without API URL, using fallback data');
+        setFeaturedItems(productionFallbackItems);
+        setUsingFallback(true);
+        return;
+      }
+      
       // Increase timeout and add retry logic
       const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 second timeout
+      const timeoutId = setTimeout(() => controller.abort(), 5000); // 5 second timeout for production
       
       const response = await fetch(`${apiUrl}/api/featured-items`, {
         signal: controller.signal,
@@ -63,15 +157,23 @@ const FeaturedItems = () => {
         const activeItems = data.filter(item => item.isActive);
         setFeaturedItems(activeItems);
         setError(null);
+        setUsingFallback(false);
       } else {
         throw new Error(`Failed to load featured items: ${response.status} ${response.statusText}`);
       }
     } catch (error) {
       console.error('Error fetching featured items:', error);
       
-      // Instead of using mock data, show a proper error message
-      setError('Unable to load featured items. Please check your connection and try again.');
-      setFeaturedItems([]);
+      // Use fallback data in production, show error in development
+      if (process.env.NODE_ENV === 'production') {
+        console.log('Using fallback data due to connection error');
+        setFeaturedItems(productionFallbackItems);
+        setUsingFallback(true);
+        setError(null);
+      } else {
+        setError('Unable to load featured items. Please check your connection and try again.');
+        setFeaturedItems([]);
+      }
     } finally {
       setLoading(false);
     }
@@ -149,6 +251,13 @@ const FeaturedItems = () => {
           </button>
         </div>
       </div>
+      
+      {/* Show fallback notification only in production */}
+      {usingFallback && (
+        <div className="fallback-notification">
+          <p>🍕 Showing menu items - Full functionality with backend coming soon!</p>
+        </div>
+      )}
       
       {/* Filter Buttons */}
       <div className="filter-container">
