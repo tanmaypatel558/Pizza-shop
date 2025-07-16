@@ -8,7 +8,7 @@ const OrderTracking = ({ orderId, onClose }) => {
   const [error, setError] = useState(null);
   const [inputOrderId, setInputOrderId] = useState('');
   const [currentOrderId, setCurrentOrderId] = useState(orderId || '');
-  const [socket, setSocket] = useState(null);
+  const [, setSocket] = useState(null);
 
   const fetchTrackingData = useCallback(async () => {
     try {
