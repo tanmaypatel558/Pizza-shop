@@ -1,1 +1,22 @@
-[]
+[
+  {
+    "id": 1752702202054,
+    "name": "cheese Pizza",
+    "price": "$10",
+    "description": "Hot Pizza",
+    "ingredients": [],
+    "image": "https://images.pexels.com/photos/39720/pexels-photo-39720.jpeg",
+    "category": "pizza",
+    "isAvailable": true,
+    "isGlutenFreeOption": false,
+    "customizations": {
+      "sizes": [
+        "Smalllarge\\"
+      ],
+      "toppings": [],
+      "crusts": []
+    },
+    "createdAt": "2025-07-16T21:43:22.054Z",
+    "updatedAt": "2025-07-16T21:43:22.054Z"
+  }
+]

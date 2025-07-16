@@ -132,5 +132,35 @@
     "isActive": true,
     "createdAt": "2025-07-16T20:06:57.660Z",
     "updatedAt": "2025-07-16T20:06:57.660Z"
+  },
+  {
+    "id": 1752702496149,
+    "name": "Margherita Pizza",
+    "price": " $24.99",
+    "rating": "95%",
+    "reviews": "(324)",
+    "badge": "#1 Most Liked",
+    "image": "https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
+    "description": "https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
+    "ingredients": [],
+    "category": "pizza",
+    "isActive": true,
+    "createdAt": "2025-07-16T21:48:16.149Z",
+    "updatedAt": "2025-07-16T21:48:16.149Z"
+  },
+  {
+    "id": 1752702576544,
+    "name": " Classic Caesar Salad",
+    "price": "$12.99",
+    "rating": "90%",
+    "reviews": "(142)",
+    "badge": "Crisp romaine lettuce, parmesan cheese, croutons, and Caesar dressing",
+    "image": "https://images.unsplash.com/photo-1546793665-c74683f339c1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80 Category: salad",
+    "description": "fresh",
+    "ingredients": [],
+    "category": "salad",
+    "isActive": true,
+    "createdAt": "2025-07-16T21:49:36.544Z",
+    "updatedAt": "2025-07-16T21:49:36.544Z"
   }
 ]

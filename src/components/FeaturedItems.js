@@ -2,88 +2,6 @@ import React, { useState, useEffect } from 'react';
 import './FeaturedItems.css';
 import PizzaModal from './PizzaModal';
 
-// Mock data for when the backend is not available
-const mockFeaturedItems = [
-  {
-    id: 1,
-    name: "Margherita Pizza",
-    price: "$24.99",
-    image: "https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
-    rating: "95%",
-    reviews: "(324)",
-    badge: "#1 Most Liked",
-    category: "pizza",
-    isActive: true,
-    description: "Fresh tomato sauce, mozzarella cheese, fresh basil, and olive oil",
-    ingredients: ["tomato sauce", "mozzarella", "basil", "olive oil"]
-  },
-  {
-    id: 2,
-    name: "Pepperoni Deluxe",
-    price: "$28.99",
-    image: "https://images.unsplash.com/photo-1628840042765-356cda07504e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
-    rating: "92%",
-    reviews: "(268)",
-    badge: "Popular",
-    category: "pizza",
-    isActive: true,
-    description: "Pepperoni, mozzarella cheese, and tomato sauce",
-    ingredients: ["pepperoni", "mozzarella", "tomato sauce"]
-  },
-  {
-    id: 3,
-    name: "Vegetarian Supreme",
-    price: "$26.99",
-    image: "https://images.unsplash.com/photo-1571407970349-bc81e7e96d47?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
-    rating: "88%",
-    reviews: "(195)",
-    badge: "Healthy Choice",
-    category: "pizza",
-    isActive: true,
-    description: "Bell peppers, mushrooms, onions, olives, and tomatoes",
-    ingredients: ["bell peppers", "mushrooms", "onions", "olives", "tomatoes"]
-  },
-  {
-    id: 4,
-    name: "Classic Caesar Salad",
-    price: "$12.99",
-    image: "https://images.unsplash.com/photo-1546793665-c74683f339c1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
-    rating: "90%",
-    reviews: "(142)",
-    badge: "Fresh",
-    category: "salad",
-    isActive: true,
-    description: "Crisp romaine lettuce, parmesan cheese, croutons, and Caesar dressing",
-    ingredients: ["romaine lettuce", "parmesan", "croutons", "caesar dressing"]
-  },
-  {
-    id: 5,
-    name: "Coca Cola",
-    price: "$2.99",
-    image: "https://images.unsplash.com/photo-1622650862525-fd8e4b0c4c53?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
-    rating: "85%",
-    reviews: "(89)",
-    badge: "Refreshing",
-    category: "drink",
-    isActive: true,
-    description: "Ice-cold Coca Cola served in a chilled glass",
-    ingredients: ["coca cola", "ice"]
-  },
-  {
-    id: 6,
-    name: "Garlic Bread",
-    price: "$8.99",
-    image: "https://images.unsplash.com/photo-1553909489-cd47e0ef937f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
-    rating: "93%",
-    reviews: "(156)",
-    badge: "Appetizer",
-    category: "appetizer",
-    isActive: true,
-    description: "Freshly baked bread with garlic butter and herbs",
-    ingredients: ["bread", "garlic", "butter", "herbs"]
-  }
-];
-
 const FeaturedItems = () => {
   const [selectedPizza, setSelectedPizza] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -92,7 +10,6 @@ const FeaturedItems = () => {
   const [selectedFilter, setSelectedFilter] = useState('all');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [usingMockData, setUsingMockData] = useState(false);
 
   // Available filter categories
   const filterCategories = [
@@ -125,33 +42,36 @@ const FeaturedItems = () => {
       // Use environment variable for API URL or fallback to localhost for development
       const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:5000';
       
-      // Add timeout to prevent long waits
+      // Increase timeout and add retry logic
       const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 5000); // 5 second timeout
+      const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 second timeout
       
       const response = await fetch(`${apiUrl}/api/featured-items`, {
-        signal: controller.signal
+        signal: controller.signal,
+        headers: {
+          'Content-Type': 'application/json',
+        },
       });
       
       clearTimeout(timeoutId);
       
       if (response.ok) {
         const data = await response.json();
+        console.log('Successfully fetched featured items:', data);
+        
         // Only show active items on the frontend
         const activeItems = data.filter(item => item.isActive);
         setFeaturedItems(activeItems);
-        setUsingMockData(false);
+        setError(null);
       } else {
-        throw new Error('Failed to load featured items');
+        throw new Error(`Failed to load featured items: ${response.status} ${response.statusText}`);
       }
     } catch (error) {
       console.error('Error fetching featured items:', error);
       
-      // Use mock data as fallback
-      console.log('Using mock data as fallback...');
-      setFeaturedItems(mockFeaturedItems);
-      setUsingMockData(true);
-      setError(null); // Clear error since we have fallback data
+      // Instead of using mock data, show a proper error message
+      setError('Unable to load featured items. Please check your connection and try again.');
+      setFeaturedItems([]);
     } finally {
       setLoading(false);
     }
@@ -171,6 +91,10 @@ const FeaturedItems = () => {
     setSelectedFilter(filterKey);
   };
 
+  const handleRetry = () => {
+    fetchFeaturedItems();
+  };
+
   if (loading) {
     return (
       <section className="featured-items">
@@ -186,7 +110,27 @@ const FeaturedItems = () => {
           </div>
         </div>
         <div className="loading-state">
+          <div className="loading-spinner"></div>
           <p>Loading featured items...</p>
+        </div>
+      </section>
+    );
+  }
+
+  if (error) {
+    return (
+      <section className="featured-items">
+        <div className="featured-header">
+          <h2 className="featured-title">Featured Items</h2>
+        </div>
+        <div className="error-state">
+          <div className="error-message">
+            <h3>🔌 Connection Error</h3>
+            <p>{error}</p>
+            <button onClick={handleRetry} className="retry-btn">
+              Try Again
+            </button>
+          </div>
         </div>
       </section>
     );
@@ -206,13 +150,6 @@ const FeaturedItems = () => {
         </div>
       </div>
       
-      {/* Show demo mode notification */}
-      {usingMockData && (
-        <div className="demo-notification">
-          <p>🍕 Demo Mode: Displaying sample menu items</p>
-        </div>
-      )}
-      
       {/* Filter Buttons */}
       <div className="filter-container">
         <div className="filter-buttons">
@@ -228,57 +165,66 @@ const FeaturedItems = () => {
           ))}
         </div>
       </div>
-      
-      <div className="featured-scroll-container">
-        <div className="featured-grid">
-          {filteredItems.length === 0 ? (
-            <div className="no-items">
-              <p>
-                {selectedFilter === 'all' 
-                  ? 'No featured items available at the moment.' 
-                  : `No ${filterCategories.find(cat => cat.key === selectedFilter)?.label.toLowerCase()} available at the moment.`}
-              </p>
-            </div>
-          ) : (
-            filteredItems.map(item => (
-              <div key={item.id} className="featured-item">
-                <div className="item-image-container">
-                  <img src={item.image} alt={item.name} className="item-image" />
+
+      {/* Featured Items Grid */}
+      <div className="featured-grid">
+        {filteredItems.length === 0 ? (
+          <div className="no-items">
+            <h3>No items found</h3>
+            <p>No {selectedFilter === 'all' ? '' : selectedFilter + ' '}items are currently available.</p>
+            <button onClick={handleRetry} className="retry-btn">
+              Refresh Items
+            </button>
+          </div>
+        ) : (
+          filteredItems.map((item) => (
+            <div key={item.id} className="featured-item">
+              <div className="item-image-container">
+                <img 
+                  src={item.image} 
+                  alt={item.name}
+                  className="item-image"
+                />
+                {item.badge && (
+                  <div className="item-badge">
+                    {item.badge}
+                  </div>
+                )}
+              </div>
+              <div className="item-content">
+                <h3 className="item-name">{item.name}</h3>
+                <p className="item-description">{item.description}</p>
+                <div className="item-stats">
+                  <span className="item-rating">
+                    ⭐ {item.rating}
+                  </span>
+                  <span className="item-reviews">
+                    {item.reviews}
+                  </span>
+                </div>
+                <div className="item-footer">
+                  <span className="item-price">{item.price}</span>
                   <button 
                     className="add-to-cart-btn"
                     onClick={() => handleAddToCart(item)}
                   >
-                    <span>+</span>
+                    Add to Cart
                   </button>
                 </div>
-                
-                <div className="item-content">
-                  <h3 className="item-name">{item.name}</h3>
-                  <div className="item-price-rating">
-                    <span className="item-price">{item.price}</span>
-                    <div className="item-rating">
-                      <span className="thumbs-up">👍</span>
-                      <span className="rating-percentage">{item.rating}</span>
-                      <span className="rating-count">{item.reviews}</span>
-                    </div>
-                  </div>
-                  {item.badge && (
-                    <div className="most-liked-badge">
-                      {item.badge}
-                    </div>
-                  )}
-                </div>
               </div>
-            ))
-          )}
-        </div>
+            </div>
+          ))
+        )}
       </div>
 
-      <PizzaModal 
-        isOpen={isModalOpen}
-        onClose={closeModal}
-        pizza={selectedPizza}
-      />
+      {/* Pizza Modal */}
+      {isModalOpen && (
+        <PizzaModal
+          pizza={selectedPizza}
+          isOpen={isModalOpen}
+          onClose={closeModal}
+        />
+      )}
     </section>
   );
 };
