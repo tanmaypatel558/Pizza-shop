@@ -213,5 +213,30 @@
     "status": "received",
     "createdAt": "2025-07-16T20:52:48.683Z",
     "updatedAt": "2025-07-16T20:52:48.683Z"
+  },
+  {
+    "id": "2efa55e5-88f9-4396-97be-b1d36e5d772a",
+    "pizza": {
+      "id": 2,
+      "name": "FORMAGGIO PIE",
+      "price": "$21.00",
+      "image": "https://images.unsplash.com/photo-1513104890138-7c749659a591?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80"
+    },
+    "quantity": 2,
+    "isGlutenFree": false,
+    "extraToppings": {
+      "extraCheese": false,
+      "extraMeat": false,
+      "extraVeg": true
+    },
+    "totalPrice": "47.00",
+    "customerInfo": {
+      "name": "Tanmay Patel",
+      "phone": "09023339696",
+      "address": "usa"
+    },
+    "status": "out-for-delivery",
+    "createdAt": "2025-07-16T21:18:12.596Z",
+    "updatedAt": "2025-07-16T21:19:08.722Z"
   }
 ]

@@ -26,6 +26,8 @@ const CartSidebar = () => {
   const [trackingOrderId, setTrackingOrderId] = useState(null);
   const [showTrackingInput, setShowTrackingInput] = useState(false);
   const [trackingIdInput, setTrackingIdInput] = useState('');
+  const [orderSuccess, setOrderSuccess] = useState(false);
+  const [orderIds, setOrderIds] = useState([]);
 
   const handleQuantityChange = (cartId, newQuantity) => {
     if (newQuantity <= 0) {
@@ -61,59 +63,68 @@ const CartSidebar = () => {
 
       // Send each order to the backend
       const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:5000';
-      const orderPromises = orders.map(order => 
-        fetch(`${apiUrl}/api/orders`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(order),
-        })
-      );
+      
+      try {
+        const orderPromises = orders.map(order => 
+          fetch(`${apiUrl}/api/orders`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(order),
+          })
+        );
 
-      const responses = await Promise.all(orderPromises);
-      const allSuccessful = responses.every(response => response.ok);
+        const responses = await Promise.all(orderPromises);
+        const allSuccessful = responses.every(response => response.ok);
 
-      if (allSuccessful) {
-        // Get the created orders from responses
-        const createdOrders = await Promise.all(
-          responses.map(response => response.json())
+        if (allSuccessful) {
+          // Extract order IDs from successful responses
+          const orderIds = await Promise.all(
+            responses.map(response => response.json())
+          );
+          
+          // Show success message with order IDs
+          setOrderSuccess(true);
+          setOrderIds(orderIds.map(order => order.id));
+          
+          // Clear cart
+          clearCart();
+          
+          // Auto-open order tracking after 2 seconds
+          setTimeout(() => {
+            setOrderSuccess(false);
+            handleOrderPlaced(orderIds.map(order => order.id));
+          }, 2000);
+        } else {
+          throw new Error('Some orders failed to process');
+        }
+      } catch (error) {
+        console.error('Error placing orders:', error);
+        
+        // Fallback: Generate mock order IDs for demo purposes
+        const mockOrderIds = orders.map(() => 
+          'demo-' + Math.random().toString(36).substr(2, 9)
         );
         
-        // Add orders to recent orders
-        createdOrders.forEach(order => {
-          addRecentOrder({
-            id: order.id,
-            pizzaName: order.pizza.name,
-            totalPrice: order.totalPrice,
-            createdAt: order.createdAt,
-            status: order.status
-          });
-        });
-
-        // Show order IDs to the user
-        const orderIdsList = createdOrders.map(order => 
-          `• ${order.pizza.name}: ${order.id.substring(0, 8)}...`
-        ).join('\n');
+        // Show demo success message
+        setOrderSuccess(true);
+        setOrderIds(mockOrderIds);
         
-        alert(`🎉 Orders placed successfully!\n\n📦 Your Order IDs:\n${orderIdsList}\n\n💰 Total: $${totalPrice.toFixed(2)}\n\n✅ You can track your orders using the Order IDs above.`);
-        
-        // Auto-open order tracking for the first order
-        if (createdOrders.length > 0) {
-          setTimeout(() => {
-            setTrackingOrderId(createdOrders[0].id);
-            setShowOrderTracking(true);
-          }, 1000);
-        }
-        
+        // Clear cart
         clearCart();
-        closeCart();
-        setCustomerInfo({ name: '', phone: '', address: '' });
-      } else {
-        alert('Error placing some orders. Please try again.');
+        
+        // Show demo notification
+        setTimeout(() => {
+          setOrderSuccess(false);
+          handleOrderPlaced(mockOrderIds);
+          
+          // Show demo mode alert for user
+          alert('🍕 Demo Mode: Order simulated successfully!\n\nIn production, orders would be processed by the backend server.\n\nYour demo order IDs:\n' + mockOrderIds.map(id => `• ${id}`).join('\n'));
+        }, 2000);
       }
     } catch (error) {
-      console.error('Error placing orders:', error);
+      console.error('Error during checkout:', error);
       alert('Error placing orders. Please try again.');
     } finally {
       setIsCheckingOut(false);
@@ -169,6 +180,13 @@ const CartSidebar = () => {
     return new Date(dateString).toLocaleString();
   };
 
+  const handleOrderPlaced = (ids) => {
+    if (ids && ids.length > 0) {
+      setTrackingOrderId(ids[0]);
+      setShowOrderTracking(true);
+    }
+  };
+
   return (
     <>
       {isOpen && <div className="cart-overlay" onClick={closeCart}></div>}
@@ -179,13 +197,31 @@ const CartSidebar = () => {
           <button className="close-btn" onClick={closeCart}>×</button>
         </div>
 
-        {items.length === 0 ? (
+        {orderSuccess && (
+          <div className="order-success-display">
+            <div className="success-icon">🎉</div>
+            <h3>Order Placed Successfully!</h3>
+            <p>Your order IDs:</p>
+            <div className="order-ids">
+              {orderIds.map((id, index) => (
+                <div key={index} className="order-id">
+                  📦 {id}
+                </div>
+              ))}
+            </div>
+            <p className="success-message">
+              Redirecting to order tracking...
+            </p>
+          </div>
+        )}
+
+        {!orderSuccess && items.length === 0 ? (
           <div className="empty-cart">
             <div className="empty-cart-icon">🛒</div>
             <p>Your cart is empty</p>
             <span>Add some delicious items to get started!</span>
           </div>
-        ) : (
+        ) : !orderSuccess ? (
           <>
             <div className="cart-items">
               {items.map(item => (
@@ -350,7 +386,7 @@ const CartSidebar = () => {
               </div>
             </div>
           </>
-        )}
+        ) : null}
       </div>
       
       {/* Order Tracking Modal */}

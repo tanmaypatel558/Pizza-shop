@@ -1,3 +1,44 @@
+/* Demo notification styles */
+.demo-notification {
+  background: linear-gradient(135deg, #fff3cd 0%, #ffeaa7 100%);
+  border: 1px solid #ffeaa7;
+  border-radius: 12px;
+  padding: 12px 20px;
+  margin-bottom: 20px;
+  text-align: center;
+  font-size: 14px;
+  color: #856404;
+  font-weight: 600;
+  box-shadow: 0 2px 8px rgba(255, 234, 167, 0.3);
+}
+
+.demo-notification p {
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+/* Mobile demo notification styles */
+@media (max-width: 479px) {
+  .demo-notification {
+    padding: 10px 15px;
+    font-size: 13px;
+    margin-bottom: 15px;
+  }
+}
+
+/* Desktop enhanced demo notification */
+@media (min-width: 992px) {
+  .demo-notification {
+    padding: 15px 25px;
+    font-size: 15px;
+    margin-bottom: 25px;
+    border-radius: 16px;
+  }
+}
+
 .featured-items {
   padding: 20px 15px;
   background-color: white;
