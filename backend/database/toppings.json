@@ -1,0 +1,287 @@
+[
+  {
+    "id": "pepperoni",
+    "name": "Pepperoni",
+    "quantities": {
+      "normal": {
+        "price": 2.5,
+        "label": "Normal"
+      },
+      "extra": {
+        "price": 3.75,
+        "label": "Extra"
+      },
+      "double": {
+        "price": 5,
+        "label": "Double"
+      }
+    },
+    "isActive": true
+  },
+  {
+    "id": "mushrooms",
+    "name": "Mushrooms",
+    "quantities": {
+      "normal": {
+        "price": 1.75,
+        "label": "Normal"
+      },
+      "extra": {
+        "price": 2.5,
+        "label": "Extra"
+      },
+      "double": {
+        "price": 3.5,
+        "label": "Double"
+      }
+    },
+    "isActive": true
+  },
+  {
+    "id": "sausage",
+    "name": "Italian Sausage",
+    "quantities": {
+      "normal": {
+        "price": 3,
+        "label": "Normal"
+      },
+      "extra": {
+        "price": 4.25,
+        "label": "Extra"
+      },
+      "double": {
+        "price": 6,
+        "label": "Double"
+      }
+    },
+    "isActive": true
+  },
+  {
+    "id": "peppers",
+    "name": "Bell Peppers",
+    "quantities": {
+      "normal": {
+        "price": 1.5,
+        "label": "Normal"
+      },
+      "extra": {
+        "price": 2.25,
+        "label": "Extra"
+      },
+      "double": {
+        "price": 3,
+        "label": "Double"
+      }
+    },
+    "isActive": true
+  },
+  {
+    "id": "onions",
+    "name": "Red Onions",
+    "quantities": {
+      "normal": {
+        "price": 1.25,
+        "label": "Normal"
+      },
+      "extra": {
+        "price": 1.75,
+        "label": "Extra"
+      },
+      "double": {
+        "price": 2.5,
+        "label": "Double"
+      }
+    },
+    "isActive": true
+  },
+  {
+    "id": "olives",
+    "name": "Black Olives",
+    "quantities": {
+      "normal": {
+        "price": 2,
+        "label": "Normal"
+      },
+      "extra": {
+        "price": 2.75,
+        "label": "Extra"
+      },
+      "double": {
+        "price": 4,
+        "label": "Double"
+      }
+    },
+    "isActive": true
+  },
+  {
+    "id": "cheese",
+    "name": "Extra Cheese",
+    "quantities": {
+      "normal": {
+        "price": 2.5,
+        "label": "Normal"
+      },
+      "extra": {
+        "price": 3.75,
+        "label": "Extra"
+      },
+      "double": {
+        "price": 5,
+        "label": "Double"
+      }
+    },
+    "isActive": true
+  },
+  {
+    "id": "ham",
+    "name": "Ham",
+    "quantities": {
+      "normal": {
+        "price": 2.75,
+        "label": "Normal"
+      },
+      "extra": {
+        "price": 4,
+        "label": "Extra"
+      },
+      "double": {
+        "price": 5.5,
+        "label": "Double"
+      }
+    },
+    "isActive": true
+  },
+  {
+    "id": "bacon",
+    "name": "Bacon",
+    "quantities": {
+      "normal": {
+        "price": 3.25,
+        "label": "Normal"
+      },
+      "extra": {
+        "price": 4.75,
+        "label": "Extra"
+      },
+      "double": {
+        "price": 6.5,
+        "label": "Double"
+      }
+    },
+    "isActive": true
+  },
+  {
+    "id": "pineapple",
+    "name": "Pineapple",
+    "quantities": {
+      "normal": {
+        "price": 2.25,
+        "label": "Normal"
+      },
+      "extra": {
+        "price": 3.25,
+        "label": "Extra"
+      },
+      "double": {
+        "price": 4.5,
+        "label": "Double"
+      }
+    },
+    "isActive": true
+  },
+  {
+    "id": "tomatoes",
+    "name": "Cherry Tomatoes",
+    "quantities": {
+      "normal": {
+        "price": 1.5,
+        "label": "Normal"
+      },
+      "extra": {
+        "price": 2.25,
+        "label": "Extra"
+      },
+      "double": {
+        "price": 3,
+        "label": "Double"
+      }
+    },
+    "isActive": true
+  },
+  {
+    "id": "spinach",
+    "name": "Fresh Spinach",
+    "quantities": {
+      "normal": {
+        "price": 1.75,
+        "label": "Normal"
+      },
+      "extra": {
+        "price": 2.5,
+        "label": "Extra"
+      },
+      "double": {
+        "price": 3.5,
+        "label": "Double"
+      }
+    },
+    "isActive": true
+  },
+  {
+    "id": "anchovies",
+    "name": "Anchovies",
+    "quantities": {
+      "normal": {
+        "price": 3,
+        "label": "Normal"
+      },
+      "extra": {
+        "price": 4.25,
+        "label": "Extra"
+      },
+      "double": {
+        "price": 6,
+        "label": "Double"
+      }
+    },
+    "isActive": true
+  },
+  {
+    "id": "jalapenos",
+    "name": "Jalapeños",
+    "quantities": {
+      "normal": {
+        "price": 1.5,
+        "label": "Normal"
+      },
+      "extra": {
+        "price": 2.25,
+        "label": "Extra"
+      },
+      "double": {
+        "price": 3,
+        "label": "Double"
+      }
+    },
+    "isActive": true
+  },
+  {
+    "id": "arugula",
+    "name": "Arugula",
+    "quantities": {
+      "normal": {
+        "price": 2,
+        "label": "Normal"
+      },
+      "extra": {
+        "price": 2.75,
+        "label": "Extra"
+      },
+      "double": {
+        "price": 4,
+        "label": "Double"
+      }
+    },
+    "isActive": true
+  }
+]

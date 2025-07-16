@@ -1,0 +1,136 @@
+[
+  {
+    "id": 1,
+    "name": "PEPPERONI PIE",
+    "price": "$28.00",
+    "rating": "95%",
+    "reviews": "(452)",
+    "badge": "#1 Most liked",
+    "image": "https://images.pexels.com/photos/5175556/pexels-photo-5175556.jpeg",
+    "description": "Lunch size pizza - feeds one hungry pizza lover - our pepperoni: red sauce, 48 pepperonis",
+    "ingredients": [
+      "Red sauce",
+      "Mozzarella cheese",
+      "Pepperoni",
+      "Italian herbs"
+    ],
+    "category": "pizza",
+    "isActive": true,
+    "updatedAt": "2025-07-16T18:48:04.670Z"
+  },
+  {
+    "id": 2,
+    "name": "FORMAGGIO PIE",
+    "price": "$21.00",
+    "rating": "95%",
+    "reviews": "(280)",
+    "badge": "#3 Most liked",
+    "image": "https://images.unsplash.com/photo-1513104890138-7c749659a591?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
+    "description": "Classic cheese pizza with our signature red sauce and premium mozzarella cheese",
+    "ingredients": [
+      "Red sauce",
+      "Premium mozzarella cheese",
+      "Italian herbs",
+      "Olive oil"
+    ],
+    "category": "pizza",
+    "isActive": true,
+    "updatedAt": "2025-07-16T20:03:31.272Z"
+  },
+  {
+    "id": 3,
+    "name": "FUNGHI PIE",
+    "price": "$28.00",
+    "rating": "96%",
+    "reviews": "(331)",
+    "badge": "#2 Most liked",
+    "image": "https://images.unsplash.com/photo-1574071318508-1cdbab80d002?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
+    "description": "Mushroom lover's dream with fresh mushrooms, mozzarella, and our signature red sauce",
+    "ingredients": [
+      "Red sauce",
+      "Mozzarella cheese",
+      "Fresh mushrooms",
+      "Italian herbs",
+      "Garlic"
+    ],
+    "category": "pizza",
+    "isActive": true
+  },
+  {
+    "id": 1752683517725,
+    "name": "Coke",
+    "price": "$10",
+    "rating": "95",
+    "reviews": "500",
+    "badge": "most liked drink",
+    "image": "https://images.pexels.com/photos/39720/pexels-photo-39720.jpeg",
+    "description": "with ice",
+    "ingredients": [],
+    "category": "drink",
+    "isActive": true,
+    "createdAt": "2025-07-16T16:31:57.726Z",
+    "updatedAt": "2025-07-16T18:05:57.960Z"
+  },
+  {
+    "id": 1752689488114,
+    "name": "Meat Pizza",
+    "price": "$25",
+    "rating": "95%",
+    "reviews": "(600)",
+    "badge": "spicy pizza",
+    "image": "https://images.pexels.com/photos/825661/pexels-photo-825661.jpeg",
+    "description": " extra meat ",
+    "ingredients": [],
+    "category": "pizza",
+    "isActive": true,
+    "createdAt": "2025-07-16T18:11:28.114Z",
+    "updatedAt": "2025-07-16T18:11:28.114Z"
+  },
+  {
+    "id": 1752689737184,
+    "name": "cheese Pizza",
+    "price": "$80",
+    "rating": "96%",
+    "reviews": "(600)",
+    "badge": "# 4 most liked Pizza",
+    "image": "https://images.pexels.com/photos/32952940/pexels-photo-32952940.jpeg",
+    "description": "Testy and crunchy  ",
+    "ingredients": [
+      "Redsauce"
+    ],
+    "category": "pizza",
+    "isActive": true,
+    "createdAt": "2025-07-16T18:15:37.184Z",
+    "updatedAt": "2025-07-16T18:15:37.184Z"
+  },
+  {
+    "id": 1752696326969,
+    "name": "Sprite",
+    "price": "$10",
+    "rating": "95%",
+    "reviews": "(600)",
+    "badge": "#2 best drink",
+    "image": "https://images.pexels.com/photos/31332092/pexels-photo-31332092.jpeg",
+    "description": "Cold Drink",
+    "ingredients": [],
+    "category": "drink",
+    "isActive": true,
+    "createdAt": "2025-07-16T20:05:26.969Z",
+    "updatedAt": "2025-07-16T20:05:26.969Z"
+  },
+  {
+    "id": 1752696417660,
+    "name": "Pepsi",
+    "price": "$10",
+    "rating": "96%",
+    "reviews": "9520)",
+    "badge": "# Best Drink",
+    "image": "https://images.pexels.com/photos/1292294/pexels-photo-1292294.jpeg",
+    "description": "Cold drink",
+    "ingredients": [],
+    "category": "drink",
+    "isActive": true,
+    "createdAt": "2025-07-16T20:06:57.660Z",
+    "updatedAt": "2025-07-16T20:06:57.660Z"
+  }
+]

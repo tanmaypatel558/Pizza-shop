@@ -1,0 +1,17 @@
+{
+  "extraCheese": {
+    "name": "Extra Cheese",
+    "price": 3,
+    "isActive": true
+  },
+  "extraMeat": {
+    "name": "Extra Meat",
+    "price": 4,
+    "isActive": true
+  },
+  "extraVeg": {
+    "name": "Extra Vegetables",
+    "price": 2.5,
+    "isActive": true
+  }
+}

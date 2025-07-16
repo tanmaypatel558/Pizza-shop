@@ -1,0 +1,217 @@
+[
+  {
+    "id": "e084ce3c-24da-4c71-bbbe-0c93fb96ffb4",
+    "pizza": {
+      "id": 2,
+      "name": "FORMAGGIO PIE",
+      "price": "$21.00",
+      "image": "https://images.unsplash.com/photo-1513104890138-7c749659a591?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80"
+    },
+    "quantity": 1,
+    "isGlutenFree": false,
+    "totalPrice": "21.00",
+    "customerInfo": {
+      "name": "Tanmay Patel",
+      "phone": "09023339696",
+      "address": "Sathamba"
+    },
+    "status": "delivered",
+    "createdAt": "2025-07-16T16:28:52.492Z",
+    "updatedAt": "2025-07-16T16:29:10.233Z"
+  },
+  {
+    "id": "abaec065-d29d-46cd-b0f3-31ac71f2e626",
+    "pizza": {
+      "id": 3,
+      "name": "FUNGHI PIE",
+      "price": "$28.00",
+      "image": "https://images.unsplash.com/photo-1574071318508-1cdbab80d002?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80"
+    },
+    "quantity": 2,
+    "isGlutenFree": false,
+    "totalPrice": "64.00",
+    "customerInfo": {
+      "name": "Tanmay Patel",
+      "phone": "09023339696",
+      "address": "Sathamba"
+    },
+    "status": "delivered",
+    "createdAt": "2025-07-16T19:40:41.733Z",
+    "updatedAt": "2025-07-16T20:03:20.372Z"
+  },
+  {
+    "id": "e8930a73-d182-46c9-b387-56bbf1d77727",
+    "pizza": {
+      "id": 1,
+      "name": "PEPPERONI PIE",
+      "price": "$28.00",
+      "image": "https://images.pexels.com/photos/5175556/pexels-photo-5175556.jpeg"
+    },
+    "quantity": 1,
+    "isGlutenFree": false,
+    "extraToppings": {
+      "extraCheese": false,
+      "extraMeat": false,
+      "extraVeg": false
+    },
+    "totalPrice": "28.00",
+    "customerInfo": {
+      "name": "Tanmay Patel",
+      "phone": "09023339696",
+      "address": "Sathamba"
+    },
+    "status": "in-preparation",
+    "createdAt": "2025-07-16T20:18:10.999Z",
+    "updatedAt": "2025-07-16T20:27:04.397Z"
+  },
+  {
+    "id": "3d0f4839-b0f8-4381-a2f9-860cff85169c",
+    "pizza": {
+      "id": 2,
+      "name": "FORMAGGIO PIE",
+      "price": "$21.00",
+      "image": "https://images.unsplash.com/photo-1513104890138-7c749659a591?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80"
+    },
+    "quantity": 3,
+    "isGlutenFree": false,
+    "extraToppings": {
+      "extraCheese": false,
+      "extraMeat": true,
+      "extraVeg": false
+    },
+    "totalPrice": "75.00",
+    "customerInfo": {
+      "name": "Tanmay Patel",
+      "phone": "09023339696",
+      "address": "Sathamba"
+    },
+    "status": "delivered",
+    "createdAt": "2025-07-16T20:25:53.782Z",
+    "updatedAt": "2025-07-16T20:49:40.990Z"
+  },
+  {
+    "id": "afba7e11-b8c7-4ce4-88ea-0ca714db7492",
+    "pizza": {
+      "id": 1752696417660,
+      "name": "Pepsi",
+      "price": "$10",
+      "image": "https://images.pexels.com/photos/1292294/pexels-photo-1292294.jpeg"
+    },
+    "quantity": 4,
+    "isGlutenFree": false,
+    "extraToppings": {
+      "extraCheese": false,
+      "extraMeat": false,
+      "extraVeg": false
+    },
+    "totalPrice": "40.00",
+    "customerInfo": {
+      "name": "Tanmay Patel",
+      "phone": "09023339696",
+      "address": "Sathamba"
+    },
+    "status": "delivered",
+    "createdAt": "2025-07-16T20:31:05.864Z",
+    "updatedAt": "2025-07-16T20:49:47.359Z"
+  },
+  {
+    "id": "72b06b04-55ca-4b46-b4fe-2a13ba2fb71a",
+    "pizza": {
+      "id": 1752696326969,
+      "name": "Sprite",
+      "price": "$10",
+      "image": "https://images.pexels.com/photos/31332092/pexels-photo-31332092.jpeg"
+    },
+    "quantity": 2,
+    "isGlutenFree": false,
+    "extraToppings": {
+      "extraCheese": false,
+      "extraMeat": false,
+      "extraVeg": false
+    },
+    "totalPrice": "20.00",
+    "customerInfo": {
+      "name": "Tanmay Patel",
+      "phone": "09023339696",
+      "address": "Sathamba"
+    },
+    "status": "delivered",
+    "createdAt": "2025-07-16T20:36:03.676Z",
+    "updatedAt": "2025-07-16T20:49:43.004Z"
+  },
+  {
+    "id": "2409e627-8e56-4fe0-931e-9a42758eb604",
+    "pizza": {
+      "id": 1,
+      "name": "PEPPERONI PIE",
+      "price": "$28.00",
+      "image": "https://images.pexels.com/photos/5175556/pexels-photo-5175556.jpeg"
+    },
+    "quantity": 2,
+    "isGlutenFree": false,
+    "extraToppings": {
+      "extraCheese": true,
+      "extraMeat": false,
+      "extraVeg": false
+    },
+    "totalPrice": "62.00",
+    "customerInfo": {
+      "name": "Tanmay Patel",
+      "phone": "09023339696",
+      "address": "Sathamba"
+    },
+    "status": "in-preparation",
+    "createdAt": "2025-07-16T20:51:04.963Z",
+    "updatedAt": "2025-07-16T20:53:38.658Z"
+  },
+  {
+    "id": "b41e490c-3e2b-4ea3-b485-aaab301db8c2",
+    "pizza": {
+      "id": 2,
+      "name": "FORMAGGIO PIE",
+      "price": "$21.00",
+      "image": "https://images.unsplash.com/photo-1513104890138-7c749659a591?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80"
+    },
+    "quantity": 2,
+    "isGlutenFree": false,
+    "extraToppings": {
+      "extraCheese": false,
+      "extraMeat": false,
+      "extraVeg": true
+    },
+    "totalPrice": "47.00",
+    "customerInfo": {
+      "name": "Tanmay Patel",
+      "phone": "09023339696",
+      "address": "Sathamba"
+    },
+    "status": "out-for-delivery",
+    "createdAt": "2025-07-16T20:52:48.680Z",
+    "updatedAt": "2025-07-16T20:54:28.061Z"
+  },
+  {
+    "id": "eaed7242-1d2f-4406-89fd-a67a148f356d",
+    "pizza": {
+      "id": 1,
+      "name": "PEPPERONI PIE",
+      "price": "$28.00",
+      "image": "https://images.pexels.com/photos/5175556/pexels-photo-5175556.jpeg"
+    },
+    "quantity": 1,
+    "isGlutenFree": false,
+    "extraToppings": {
+      "extraCheese": false,
+      "extraMeat": true,
+      "extraVeg": false
+    },
+    "totalPrice": "32.00",
+    "customerInfo": {
+      "name": "Tanmay Patel",
+      "phone": "09023339696",
+      "address": "Sathamba"
+    },
+    "status": "received",
+    "createdAt": "2025-07-16T20:52:48.683Z",
+    "updatedAt": "2025-07-16T20:52:48.683Z"
+  }
+]

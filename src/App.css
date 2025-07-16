@@ -1,0 +1,373 @@
+/* Global reset and base styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  line-height: 1.6;
+  color: #333;
+}
+
+/* Desktop white background */
+@media (min-width: 992px) {
+  body {
+    background-color: white;
+    background-image: none;
+  }
+}
+
+.App {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Desktop white background for App */
+@media (min-width: 992px) {
+  .App {
+    background-color: white;
+    background-image: none;
+  }
+}
+
+/* Container styles */
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 15px;
+}
+
+/* Desktop container with white background and better styling */
+@media (min-width: 992px) {
+  .container {
+    background-color: white;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.05);
+    border-radius: 12px;
+    margin: 20px auto;
+    padding: 0 30px;
+  }
+}
+
+/* Main content area */
+.main-content {
+  flex: 1;
+  background-color: white;
+}
+
+/* Desktop main content with enhanced styling */
+@media (min-width: 992px) {
+  .main-content {
+    background-color: transparent;
+    margin: 20px auto;
+    max-width: 1200px;
+    position: relative;
+  }
+}
+
+
+
+/* Admin layout */
+.admin-layout {
+  background-color: #f8f9fa;
+  min-height: 100vh;
+}
+
+/* Admin access button */
+.admin-access-btn {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: #007bff;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  font-size: 20px;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0, 123, 255, 0.3);
+  transition: all 0.2s ease;
+  z-index: 100;
+}
+
+.admin-access-btn:hover {
+  background: #0056b3;
+  transform: scale(1.1);
+  box-shadow: 0 6px 16px rgba(0, 123, 255, 0.4);
+}
+
+/* Loading states */
+.loading-spinner {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border: 2px solid #f3f3f3;
+  border-top: 2px solid #007bff;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Utility classes */
+.text-center {
+  text-align: center;
+}
+
+.text-left {
+  text-align: left;
+}
+
+.text-right {
+  text-align: right;
+}
+
+.d-flex {
+  display: flex;
+}
+
+.d-block {
+  display: block;
+}
+
+.d-none {
+  display: none;
+}
+
+.justify-center {
+  justify-content: center;
+}
+
+.justify-between {
+  justify-content: space-between;
+}
+
+.align-center {
+  align-items: center;
+}
+
+.flex-column {
+  flex-direction: column;
+}
+
+.flex-wrap {
+  flex-wrap: wrap;
+}
+
+.mb-10 {
+  margin-bottom: 10px;
+}
+
+.mb-20 {
+  margin-bottom: 20px;
+}
+
+.mb-30 {
+  margin-bottom: 30px;
+}
+
+.mt-10 {
+  margin-top: 10px;
+}
+
+.mt-20 {
+  margin-top: 20px;
+}
+
+.mt-30 {
+  margin-top: 30px;
+}
+
+.p-10 {
+  padding: 10px;
+}
+
+.p-20 {
+  padding: 20px;
+}
+
+.p-30 {
+  padding: 30px;
+}
+
+/* Mobile styles (320px and up) */
+@media (max-width: 576px) {
+  .container {
+    padding: 0 10px;
+  }
+  
+  .admin-access-btn {
+    bottom: 15px;
+    right: 15px;
+    width: 45px;
+    height: 45px;
+    font-size: 18px;
+  }
+  
+  .main-content {
+    min-height: calc(100vh - 50px);
+  }
+  
+  .d-md-flex {
+    display: block;
+  }
+  
+  .d-md-none {
+    display: none;
+  }
+  
+  .flex-md-row {
+    flex-direction: column;
+  }
+  
+  .text-md-left {
+    text-align: center;
+  }
+}
+
+/* Tablet styles (768px and up) */
+@media (min-width: 768px) {
+  .container {
+    padding: 0 20px;
+  }
+  
+  .admin-access-btn {
+    bottom: 25px;
+    right: 25px;
+    width: 55px;
+    height: 55px;
+    font-size: 22px;
+  }
+  
+  .d-md-flex {
+    display: flex;
+  }
+  
+  .d-md-none {
+    display: block;
+  }
+  
+  .flex-md-row {
+    flex-direction: row;
+  }
+  
+  .text-md-left {
+    text-align: left;
+  }
+}
+
+/* Desktop styles (992px and up) */
+@media (min-width: 992px) {
+  .container {
+    padding: 0 30px;
+  }
+  
+  .admin-access-btn {
+    bottom: 30px;
+    right: 30px;
+    width: 60px;
+    height: 60px;
+    font-size: 24px;
+  }
+  
+  .main-content {
+    min-height: calc(100vh - 70px);
+  }
+}
+
+/* Large desktop styles (1200px and up) */
+@media (min-width: 1200px) {
+  .container {
+    padding: 0 40px;
+  }
+  
+  .main-content {
+    min-height: calc(100vh - 80px);
+  }
+}
+
+/* High resolution displays */
+@media (min-width: 1600px) {
+  .container {
+    max-width: 1400px;
+  }
+}
+
+/* Print styles */
+@media print {
+  .admin-access-btn {
+    display: none;
+  }
+  
+  .main-content {
+    min-height: auto;
+  }
+}
+
+/* Accessibility improvements */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+ 
+
+/* Admin link styles */
+.admin-link {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 1000;
+}
+
+.admin-link-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 50px;
+  height: 50px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  text-decoration: none;
+  border-radius: 50%;
+  font-size: 20px;
+  box-shadow: 0 4px 16px rgba(102, 126, 234, 0.3);
+  transition: all 0.3s ease;
+}
+
+.admin-link-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+  text-decoration: none;
+  color: white;
+}
+
+/* Desktop admin link with better styling */
+@media (min-width: 992px) {
+  .admin-link {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+  }
+  
+  .admin-link-btn {
+    width: 60px;
+    height: 60px;
+    font-size: 24px;
+    border-radius: 15px;
+  }
+} 
