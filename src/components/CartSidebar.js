@@ -60,8 +60,9 @@ const CartSidebar = () => {
       }));
 
       // Send each order to the backend
+      const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:5000';
       const orderPromises = orders.map(order => 
-        fetch('http://localhost:5000/api/orders', {
+        fetch(`${apiUrl}/api/orders`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

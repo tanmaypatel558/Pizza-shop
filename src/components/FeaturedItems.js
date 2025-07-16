@@ -39,7 +39,9 @@ const FeaturedItems = () => {
       setLoading(true);
       setError(null);
       
-      const response = await fetch('http://localhost:5000/api/featured-items');
+      // Use environment variable for API URL or fallback to localhost for development
+      const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+      const response = await fetch(`${apiUrl}/api/featured-items`);
       
       if (response.ok) {
         const data = await response.json();
