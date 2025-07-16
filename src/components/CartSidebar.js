@@ -28,6 +28,8 @@ const CartSidebar = () => {
   const [trackingIdInput, setTrackingIdInput] = useState('');
   const [orderSuccess, setOrderSuccess] = useState(false);
   const [orderIds, setOrderIds] = useState([]);
+  const [orderError, setOrderError] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleQuantityChange = (cartId, newQuantity) => {
     if (newQuantity <= 0) {
@@ -64,6 +66,9 @@ const CartSidebar = () => {
       // Send each order to the backend
       const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:5000';
       
+      setIsLoading(true);
+      setOrderError(null);
+
       try {
         const orderPromises = orders.map(order => 
           fetch(`${apiUrl}/api/orders`, {
@@ -102,32 +107,34 @@ const CartSidebar = () => {
       } catch (error) {
         console.error('Error placing orders:', error);
         
-        // Fallback: Generate mock order IDs for demo purposes
-        const mockOrderIds = orders.map(() => 
-          'demo-' + Math.random().toString(36).substr(2, 9)
-        );
+        // Check if we're in production mode
+        const isProduction = process.env.NODE_ENV === 'production';
         
-        // Show demo success message
-        setOrderSuccess(true);
-        setOrderIds(mockOrderIds);
+        if (isProduction) {
+          // In production, show a user-friendly message
+          setOrderError('Unable to process your order at this time. Please try again later or contact support.');
+        } else {
+          // In development, show detailed error
+          if (error.name === 'AbortError') {
+            setOrderError('Order request timed out. Please check your connection and try again.');
+          } else {
+            setOrderError('Unable to connect to the order system. Please ensure the backend server is running.');
+          }
+        }
         
-        // Clear cart
-        clearCart();
-        
-        // Show demo notification
+        // Clear error after 5 seconds
         setTimeout(() => {
-          setOrderSuccess(false);
-          handleOrderPlaced(mockOrderIds);
-          
-          // Show demo mode alert for user
-          alert('🍕 Demo Mode: Order simulated successfully!\n\nIn production, orders would be processed by the backend server.\n\nYour demo order IDs:\n' + mockOrderIds.map(id => `• ${id}`).join('\n'));
-        }, 2000);
+          setOrderError(null);
+        }, 5000);
+      } finally {
+        setIsLoading(false);
+        setIsCheckingOut(false);
       }
     } catch (error) {
       console.error('Error during checkout:', error);
-      alert('Error placing orders. Please try again.');
-    } finally {
+      setOrderError('Unexpected error occurred. Please try again.');
       setIsCheckingOut(false);
+      setIsLoading(false);
     }
   };
 
@@ -212,6 +219,14 @@ const CartSidebar = () => {
             <p className="success-message">
               Redirecting to order tracking...
             </p>
+          </div>
+        )}
+
+        {orderError && (
+          <div className="order-error-display">
+            <div className="error-icon">❌</div>
+            <h3>Order Failed</h3>
+            <p>{orderError}</p>
           </div>
         )}
 
@@ -314,16 +329,16 @@ const CartSidebar = () => {
                 <button 
                   onClick={clearCart}
                   className="clear-btn"
-                  disabled={isCheckingOut}
+                  disabled={isCheckingOut || isLoading}
                 >
                   Clear Cart
                 </button>
                 <button 
                   onClick={handleCheckout}
                   className="checkout-btn"
-                  disabled={isCheckingOut}
+                  disabled={isCheckingOut || isLoading}
                 >
-                  {isCheckingOut ? 'Placing Order...' : 'Place Order'}
+                  {isLoading ? 'Placing Order...' : 'Place Order'}
                 </button>
               </div>
 
