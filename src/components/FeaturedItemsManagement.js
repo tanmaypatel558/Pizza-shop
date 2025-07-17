@@ -162,50 +162,64 @@ const FeaturedItemsManagement = ({ items, onItemsUpdate, onNotification }) => {
       </div>
 
       <div className="items-grid">
-        {items.map(item => (
-          <div key={item.id} className={`item-card ${!item.isActive ? 'inactive' : ''}`}>
-            <div className="item-image">
-              <img src={item.image} alt={item.name} />
-              <div className="item-actions">
-                <button 
-                  className="edit-btn" 
-                  onClick={() => openModal(item)}
-                  title="Edit"
-                >
-                  ✏️
-                </button>
-                <button 
-                  className="delete-btn" 
-                  onClick={() => handleDelete(item.id)}
-                  title="Delete"
-                >
-                  🗑️
-                </button>
-                <button 
-                  className="toggle-btn" 
-                  onClick={() => toggleActive(item)}
-                  title={item.isActive ? 'Deactivate' : 'Activate'}
-                >
-                  {item.isActive ? '⏸️' : '▶️'}
-                </button>
+        {/* Debug: Show items count */}
+        <div style={{ display: 'none' }}>
+          {console.log('Featured Items Management - Items received:', items)}
+          {console.log('Featured Items Management - Items count:', items.length)}
+        </div>
+        
+        {items && items.length > 0 ? (
+          items.map(item => (
+            <div key={item.id} className={`item-card ${!item.isActive ? 'inactive' : ''}`}>
+              <div className="item-image">
+                <img src={item.image} alt={item.name} />
+                <div className="item-actions">
+                  <button 
+                    className="edit-btn" 
+                    onClick={() => openModal(item)}
+                    title="Edit"
+                  >
+                    ✏️
+                  </button>
+                  <button 
+                    className="delete-btn" 
+                    onClick={() => handleDelete(item.id)}
+                    title="Delete"
+                  >
+                    🗑️
+                  </button>
+                  <button 
+                    className="toggle-btn" 
+                    onClick={() => toggleActive(item)}
+                    title={item.isActive ? 'Deactivate' : 'Activate'}
+                  >
+                    {item.isActive ? '⏸️' : '▶️'}
+                  </button>
+                </div>
+              </div>
+              
+              <div className="item-info">
+                <h3 className="item-name">{item.name}</h3>
+                <div className="item-meta">
+                  <span className="item-price">{item.price}</span>
+                  <span className="item-rating">👍 {item.rating} {item.reviews}</span>
+                </div>
+                {item.badge && (
+                  <div className="item-badge">{item.badge}</div>
+                )}
+                <div className="item-status">
+                  Status: {item.isActive ? '🟢 Active' : '🔴 Inactive'}
+                </div>
               </div>
             </div>
-            
-            <div className="item-info">
-              <h3 className="item-name">{item.name}</h3>
-              <div className="item-meta">
-                <span className="item-price">{item.price}</span>
-                <span className="item-rating">👍 {item.rating} {item.reviews}</span>
-              </div>
-              {item.badge && (
-                <div className="item-badge">{item.badge}</div>
-              )}
-              <div className="item-status">
-                Status: {item.isActive ? '🟢 Active' : '🔴 Inactive'}
-              </div>
-            </div>
+          ))
+        ) : (
+          <div className="no-items-message">
+            <h3>No Featured Items Found</h3>
+            <p>Items array is empty or not loaded. Check console for debugging info.</p>
+            <p>Expected items: {items ? items.length : 'null/undefined'}</p>
           </div>
-        ))}
+        )}
       </div>
 
       {isModalOpen && (

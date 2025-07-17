@@ -134,12 +134,17 @@ const AdminDashboard = () => {
   };
 
   const loadFeaturedItems = async () => {
+    console.log('AdminDashboard - loadFeaturedItems called');
+    console.log('AdminDashboard - sampleFeaturedItems:', sampleFeaturedItems);
+    
     try {
       const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+      console.log('AdminDashboard - Trying to fetch from:', `${apiUrl}/api/featured-items`);
       const response = await fetch(`${apiUrl}/api/featured-items`);
       
       if (response.ok) {
         const data = await response.json();
+        console.log('AdminDashboard - Successfully fetched featured items:', data);
         setFeaturedItems(data);
       } else {
         throw new Error('Failed to load featured items');
@@ -147,6 +152,7 @@ const AdminDashboard = () => {
     } catch (error) {
       console.error('Error loading featured items:', error);
       console.log('Using sample featured items data');
+      console.log('AdminDashboard - Setting featuredItems to sampleFeaturedItems:', sampleFeaturedItems);
       setFeaturedItems(sampleFeaturedItems);
     }
   };
@@ -235,6 +241,7 @@ const AdminDashboard = () => {
           />
         );
       case 'featured-items':
+        console.log('AdminDashboard - Rendering FeaturedItemsManagement with items:', featuredItems);
         return (
           <FeaturedItemsManagement 
             items={featuredItems} 
