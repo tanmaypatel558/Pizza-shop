@@ -18,7 +18,8 @@ const AdminDashboard = () => {
 
   useEffect(() => {
     // Initialize socket connection
-    const socketConnection = io('http://localhost:5000');
+    const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+    const socketConnection = io(apiUrl);
 
     // Join admin room for real-time updates
     socketConnection.emit('join-admin');

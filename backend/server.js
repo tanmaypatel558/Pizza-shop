@@ -10,13 +10,21 @@ const app = express();
 const server = http.createServer(app);
 const io = socketIo(server, {
   cors: {
-    origin: "http://localhost:3000",
+    origin: process.env.NODE_ENV === 'production' 
+      ? ["https://pizza-shop-delta.vercel.app", "https://pizza-shop-tanmaypatel558.vercel.app"] 
+      : "http://localhost:3000",
     methods: ["GET", "POST"]
   }
 });
 
 // Middleware
-app.use(cors());
+app.use(cors({
+  origin: process.env.NODE_ENV === 'production' 
+    ? ["https://pizza-shop-delta.vercel.app", "https://pizza-shop-tanmaypatel558.vercel.app"] 
+    : "http://localhost:3000",
+  methods: ["GET", "POST", "PUT", "DELETE"],
+  credentials: true
+}));
 app.use(express.json());
 
 // Admin dashboard is now served from separate admin-server.js on port 8080

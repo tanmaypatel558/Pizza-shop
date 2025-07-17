@@ -16,7 +16,8 @@ const OrdersStatusToggle = () => {
 
   const fetchOrdersStatus = async () => {
     try {
-      const response = await fetch('http://localhost:5000/api/orders-status');
+      const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+      const response = await fetch(`${apiUrl}/api/orders-status`);
       if (response.ok) {
         const data = await response.json();
         setOrdersStatus(data);
@@ -30,7 +31,8 @@ const OrdersStatusToggle = () => {
   const toggleOrdersStatus = async () => {
     setLoading(true);
     try {
-      const response = await fetch('http://localhost:5000/api/orders-status/toggle', {
+      const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+      const response = await fetch(`${apiUrl}/api/orders-status/toggle`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -54,7 +56,8 @@ const OrdersStatusToggle = () => {
   const updateMessage = async () => {
     setLoading(true);
     try {
-      const response = await fetch('http://localhost:5000/api/orders-status', {
+      const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+      const response = await fetch(`${apiUrl}/api/orders-status`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

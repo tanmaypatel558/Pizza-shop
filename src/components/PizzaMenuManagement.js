@@ -93,9 +93,10 @@ const PizzaMenuManagement = ({ menu, onMenuUpdate, onNotification }) => {
     e.preventDefault();
     
     try {
+      const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:5000';
       const url = editingPizza 
-        ? `http://localhost:5000/api/pizza-menu/${editingPizza.id}`
-        : 'http://localhost:5000/api/pizza-menu';
+        ? `${apiUrl}/api/pizza-menu/${editingPizza.id}`
+        : `${apiUrl}/api/pizza-menu`;
       
       const method = editingPizza ? 'PUT' : 'POST';
       
@@ -126,7 +127,8 @@ const PizzaMenuManagement = ({ menu, onMenuUpdate, onNotification }) => {
   const handleDelete = async (id) => {
     if (window.confirm('Are you sure you want to delete this pizza?')) {
       try {
-        const response = await fetch(`http://localhost:5000/api/pizza-menu/${id}`, {
+        const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+        const response = await fetch(`${apiUrl}/api/pizza-menu/${id}`, {
           method: 'DELETE',
         });
 
