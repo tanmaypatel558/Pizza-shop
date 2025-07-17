@@ -94,11 +94,11 @@ const FeaturedItemsManagement = ({ items, onItemsUpdate, onNotification }) => {
           'success'
         );
       } else {
-        onNotification('Error saving featured item', 'error');
+        onNotification('Backend not available - Changes will not be saved until backend is deployed', 'error');
       }
     } catch (error) {
       console.error('Error saving featured item:', error);
-      onNotification('Error saving featured item', 'error');
+      onNotification('Backend not available - Changes will not be saved until backend is deployed', 'error');
     }
   };
 
@@ -114,11 +114,11 @@ const FeaturedItemsManagement = ({ items, onItemsUpdate, onNotification }) => {
           onItemsUpdate();
           onNotification('Featured item deleted successfully', 'success');
         } else {
-          onNotification('Error deleting featured item', 'error');
+          onNotification('Backend not available - Changes will not be saved until backend is deployed', 'error');
         }
       } catch (error) {
         console.error('Error deleting featured item:', error);
-        onNotification('Error deleting featured item', 'error');
+        onNotification('Backend not available - Changes will not be saved until backend is deployed', 'error');
       }
     }
   };
@@ -140,10 +140,12 @@ const FeaturedItemsManagement = ({ items, onItemsUpdate, onNotification }) => {
           `Featured item ${item.isActive ? 'deactivated' : 'activated'} successfully`,
           'success'
         );
+      } else {
+        onNotification('Backend not available - Changes will not be saved until backend is deployed', 'error');
       }
     } catch (error) {
       console.error('Error updating featured item:', error);
-      onNotification('Error updating featured item', 'error');
+      onNotification('Backend not available - Changes will not be saved until backend is deployed', 'error');
     }
   };
 

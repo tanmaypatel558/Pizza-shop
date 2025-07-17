@@ -92,7 +92,6 @@ const FeaturedItems = () => {
   const [selectedFilter, setSelectedFilter] = useState('all');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [usingFallback, setUsingFallback] = useState(false);
 
   // Available filter categories
   const filterCategories = [
@@ -132,7 +131,6 @@ const FeaturedItems = () => {
       if (isProduction && !hasApiUrl) {
         console.log('Production mode detected without API URL, using fallback data');
         setFeaturedItems(productionFallbackItems);
-        setUsingFallback(true);
         return;
       }
       
@@ -157,7 +155,6 @@ const FeaturedItems = () => {
         const activeItems = data.filter(item => item.isActive);
         setFeaturedItems(activeItems);
         setError(null);
-        setUsingFallback(false);
       } else {
         throw new Error(`Failed to load featured items: ${response.status} ${response.statusText}`);
       }
@@ -167,7 +164,6 @@ const FeaturedItems = () => {
       // Always use fallback data when backend is not available
       console.log('Backend not available, using fallback data');
       setFeaturedItems(productionFallbackItems);
-      setUsingFallback(true);
       setError(null); // Clear error since we have fallback data
     } finally {
       setLoading(false);

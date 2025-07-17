@@ -7,6 +7,62 @@ import PizzaMenuManagement from './PizzaMenuManagement';
 import ToppingsManagement from './ToppingsManagement';
 import OrdersStatusToggle from './OrdersStatusToggle';
 
+// Sample fallback data for admin dashboard when backend is not available
+const sampleFeaturedItems = [
+  {
+    id: 1,
+    name: "PEPPERONI PIE",
+    price: "$28.00",
+    rating: "95%",
+    reviews: "(452)",
+    badge: "#1 Most liked",
+    image: "https://images.pexels.com/photos/5175556/pexels-photo-5175556.jpeg",
+    description: "Lunch size pizza - feeds one hungry pizza lover - our pepperoni: red sauce, 48 pepperonis",
+    ingredients: ["Red sauce", "Mozzarella cheese", "Pepperoni", "Italian herbs"],
+    category: "pizza",
+    isActive: true
+  },
+  {
+    id: 2,
+    name: "FORMAGGIO PIE",
+    price: "$21.00",
+    rating: "95%",
+    reviews: "(280)",
+    badge: "#3 Most liked",
+    image: "https://images.unsplash.com/photo-1513104890138-7c749659a591?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
+    description: "Classic cheese pizza with our signature red sauce and premium mozzarella cheese",
+    ingredients: ["Red sauce", "Premium mozzarella cheese", "Italian herbs", "Olive oil"],
+    category: "pizza",
+    isActive: true
+  },
+  {
+    id: 3,
+    name: "FUNGHI PIE",
+    price: "$28.00",
+    rating: "96%",
+    reviews: "(331)",
+    badge: "#2 Most liked",
+    image: "https://images.unsplash.com/photo-1574071318508-1cdbab80d002?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
+    description: "Mushroom lover's dream with fresh mushrooms, mozzarella, and our signature red sauce",
+    ingredients: ["Red sauce", "Mozzarella cheese", "Fresh mushrooms", "Italian herbs", "Garlic"],
+    category: "pizza",
+    isActive: true
+  },
+  {
+    id: 4,
+    name: "Coke",
+    price: "$10.00",
+    rating: "95%",
+    reviews: "(500)",
+    badge: "Most liked drink",
+    image: "https://images.pexels.com/photos/39720/pexels-photo-39720.jpeg",
+    description: "Ice-cold Coca Cola served chilled",
+    ingredients: ["Coca Cola", "Ice"],
+    category: "drink",
+    isActive: true
+  }
+];
+
 const AdminDashboard = () => {
   const [activeTab, setActiveTab] = useState('orders');
   const [orders, setOrders] = useState([]);
@@ -81,11 +137,17 @@ const AdminDashboard = () => {
     try {
       const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:5000';
       const response = await fetch(`${apiUrl}/api/featured-items`);
-      const data = await response.json();
-      setFeaturedItems(data);
+      
+      if (response.ok) {
+        const data = await response.json();
+        setFeaturedItems(data);
+      } else {
+        throw new Error('Failed to load featured items');
+      }
     } catch (error) {
       console.error('Error loading featured items:', error);
-      setFeaturedItems([]);
+      console.log('Using sample featured items data');
+      setFeaturedItems(sampleFeaturedItems);
     }
   };
 
