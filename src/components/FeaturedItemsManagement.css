@@ -26,6 +26,22 @@
   padding: 20px 30px;
   background: #f8f9fa;
   border-bottom: 2px solid #e9ecef;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+.demo-items-note {
+  background: linear-gradient(135deg, #6f42c1, #563d7c);
+  color: white;
+  padding: 8px 16px;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  box-shadow: 0 2px 8px rgba(111, 66, 193, 0.3);
+  white-space: nowrap;
 }
 
 /* Desktop enhanced management header styling */

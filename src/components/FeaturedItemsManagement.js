@@ -147,10 +147,19 @@ const FeaturedItemsManagement = ({ items, onItemsUpdate, onNotification }) => {
     }
   };
 
+  // Check if we have demo items
+  const hasDemoItems = items.some(item => [1, 2, 3].includes(item.id));
+
   return (
     <div className="featured-items-management">
       <div className="management-header">
         <h2>Featured Items Management</h2>
+        {hasDemoItems && (
+          <div className="demo-items-note">
+            <span>🎭</span>
+            <span>Showing sample items - Deploy backend for real management</span>
+          </div>
+        )}
         <button className="add-btn" onClick={() => openModal()}>
           + Add New Featured Item
         </button>

@@ -9,12 +9,28 @@
   margin-bottom: 30px;
   padding-bottom: 20px;
   border-bottom: 2px solid #e9ecef;
+  flex-wrap: wrap;
+  gap: 15px;
 }
 
 .order-header h2 {
   color: #2c3e50;
   margin: 0;
   font-size: 28px;
+}
+
+.demo-orders-note {
+  background: linear-gradient(135deg, #17a2b8, #138496);
+  color: white;
+  padding: 8px 16px;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  box-shadow: 0 2px 8px rgba(23, 162, 184, 0.3);
+  white-space: nowrap;
 }
 
 .order-filters {
