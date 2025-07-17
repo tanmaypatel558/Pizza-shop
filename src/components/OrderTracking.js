@@ -15,6 +15,93 @@ const OrderTracking = ({ orderId, onClose }) => {
       setLoading(true);
       setError(null);
       
+      // Check if this is a demo order
+      const isDemoOrder = currentOrderId.startsWith('DEMO-');
+      const isProduction = process.env.NODE_ENV === 'production';
+      const hasApiUrl = process.env.REACT_APP_API_URL;
+      
+      if (isDemoOrder || (isProduction && !hasApiUrl)) {
+        // Generate mock tracking data for demo mode
+        const mockTrackingData = {
+          id: currentOrderId,
+          status: 'in-preparation',
+          pizza: {
+            id: 1,
+            name: 'DEMO PIZZA',
+            price: '$24.00',
+            image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80'
+          },
+          quantity: 1,
+          totalPrice: '24.00',
+          customerInfo: {
+            name: 'Demo Customer',
+            phone: '(555) 123-4567',
+            address: '123 Demo Street, Demo City'
+          },
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString(),
+          estimatedDelivery: new Date(Date.now() + 30 * 60000).toISOString(), // 30 minutes from now
+          statusHistory: [
+            {
+              status: 'received',
+              label: 'Order Received',
+              icon: '📋',
+              completed: true,
+              current: false,
+              timestamp: new Date(Date.now() - 10 * 60000).toISOString() // 10 minutes ago
+            },
+            {
+              status: 'in-preparation',
+              label: 'Preparing',
+              icon: '👨‍🍳',
+              completed: true,
+              current: true,
+              timestamp: new Date(Date.now() - 5 * 60000).toISOString() // 5 minutes ago
+            },
+            {
+              status: 'in-oven',
+              label: 'In Oven',
+              icon: '🔥',
+              completed: false,
+              current: false,
+              timestamp: null
+            },
+            {
+              status: 'ready',
+              label: 'Ready',
+              icon: '✅',
+              completed: false,
+              current: false,
+              timestamp: null
+            },
+            {
+              status: 'out-for-delivery',
+              label: 'Out for Delivery',
+              icon: '🚚',
+              completed: false,
+              current: false,
+              timestamp: null
+            },
+            {
+              status: 'delivered',
+              label: 'Delivered',
+              icon: '🎉',
+              completed: false,
+              current: false,
+              timestamp: null
+            }
+          ]
+        };
+        
+        // Simulate loading delay
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        
+        setTrackingData(mockTrackingData);
+        setError(null);
+        console.log('Demo mode: Using mock tracking data');
+        return;
+      }
+      
       // Use environment variable for API URL or fallback to localhost for development
       const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:5000';
       
@@ -266,6 +353,16 @@ const OrderTracking = ({ orderId, onClose }) => {
           <h2>Order Tracking</h2>
           <button className="close-btn" onClick={onClose}>×</button>
         </div>
+
+        {/* Demo mode notification */}
+        {(currentOrderId.startsWith('DEMO-') || (process.env.NODE_ENV === 'production' && !process.env.REACT_APP_API_URL)) && (
+          <div className="demo-notification">
+            <p>
+              <span>🧪</span>
+              <strong>Demo Mode:</strong> This is a simulated order for demonstration purposes
+            </p>
+          </div>
+        )}
 
         <div className="order-info">
           <div className="order-details">
