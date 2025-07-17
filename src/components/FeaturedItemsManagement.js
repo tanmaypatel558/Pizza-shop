@@ -162,12 +162,6 @@ const FeaturedItemsManagement = ({ items, onItemsUpdate, onNotification }) => {
       </div>
 
       <div className="items-grid">
-        {/* Debug: Show items count */}
-        <div style={{ display: 'none' }}>
-          {console.log('Featured Items Management - Items received:', items)}
-          {console.log('Featured Items Management - Items count:', items.length)}
-        </div>
-        
         {items && items.length > 0 ? (
           items.map(item => (
             <div key={item.id} className={`item-card ${!item.isActive ? 'inactive' : ''}`}>
@@ -216,8 +210,7 @@ const FeaturedItemsManagement = ({ items, onItemsUpdate, onNotification }) => {
         ) : (
           <div className="no-items-message">
             <h3>No Featured Items Found</h3>
-            <p>Items array is empty or not loaded. Check console for debugging info.</p>
-            <p>Expected items: {items ? items.length : 'null/undefined'}</p>
+            <p>No featured items available at the moment.</p>
           </div>
         )}
       </div>
