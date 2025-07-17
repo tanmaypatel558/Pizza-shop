@@ -15,22 +15,9 @@ const AdminDashboard = () => {
   const [toppings, setToppings] = useState([]);
   const [extraToppings, setExtraToppings] = useState({});
   const [notifications, setNotifications] = useState([]);
-  const [isDemoMode, setIsDemoMode] = useState(false);
+
 
   useEffect(() => {
-    // Check if we're in demo mode (production without backend)
-    const isProduction = process.env.NODE_ENV === 'production';
-    const hasApiUrl = process.env.REACT_APP_API_URL;
-    
-    if (isProduction && !hasApiUrl) {
-      setIsDemoMode(true);
-      addNotification('Admin Dashboard is in demo mode - backend not connected', 'info');
-      
-      // Load demo data for demonstration
-      loadDemoData();
-      return;
-    }
-
     // Initialize socket connection
     const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:5000';
     
@@ -86,7 +73,6 @@ const AdminDashboard = () => {
       setOrders(data);
     } catch (error) {
       console.error('Error loading orders:', error);
-      // Set empty array for production mode
       setOrders([]);
     }
   };
@@ -99,7 +85,6 @@ const AdminDashboard = () => {
       setFeaturedItems(data);
     } catch (error) {
       console.error('Error loading featured items:', error);
-      // Set empty array for production mode
       setFeaturedItems([]);
     }
   };
@@ -112,7 +97,6 @@ const AdminDashboard = () => {
       setPizzaMenu(data);
     } catch (error) {
       console.error('Error loading pizza menu:', error);
-      // Set empty array for production mode
       setPizzaMenu([]);
     }
   };
@@ -125,7 +109,6 @@ const AdminDashboard = () => {
       setToppings(data);
     } catch (error) {
       console.error('Error loading toppings:', error);
-      // Set empty array for production mode
       setToppings([]);
     }
   };
@@ -138,163 +121,11 @@ const AdminDashboard = () => {
       setExtraToppings(data);
     } catch (error) {
       console.error('Error loading extra toppings:', error);
-      // Set empty object for production mode
       setExtraToppings({});
     }
   };
 
-  const loadDemoData = () => {
-    // Demo orders
-    const demoOrders = [
-      {
-        id: 'ORD-DEMO001',
-        pizza: {
-          id: 1,
-          name: 'PEPPERONI PIE',
-          price: '$28.00',
-          image: 'https://images.pexels.com/photos/5175556/pexels-photo-5175556.jpeg'
-        },
-        quantity: 1,
-        isGlutenFree: false,
-        extraToppings: { extraCheese: false, extraMeat: false, extraVeg: false },
-        totalPrice: '28.00',
-        customerInfo: {
-          name: 'John Smith',
-          phone: '(555) 123-4567',
-          address: '123 Main St, City'
-        },
-        status: 'in-preparation',
-        createdAt: new Date(Date.now() - 15 * 60000).toISOString(), // 15 minutes ago
-        updatedAt: new Date(Date.now() - 10 * 60000).toISOString()
-      },
-      {
-        id: 'ORD-DEMO002',
-        pizza: {
-          id: 2,
-          name: 'FORMAGGIO PIE',
-          price: '$21.00',
-          image: 'https://images.unsplash.com/photo-1513104890138-7c749659a591'
-        },
-        quantity: 2,
-        isGlutenFree: true,
-        extraToppings: { extraCheese: true, extraMeat: false, extraVeg: false },
-        totalPrice: '48.90',
-        customerInfo: {
-          name: 'Sarah Johnson',
-          phone: '(555) 987-6543',
-          address: '456 Oak Ave, Town'
-        },
-        status: 'ready',
-        createdAt: new Date(Date.now() - 30 * 60000).toISOString(), // 30 minutes ago
-        updatedAt: new Date(Date.now() - 5 * 60000).toISOString()
-      },
-      {
-        id: 'ORD-DEMO003',
-        pizza: {
-          id: 3,
-          name: 'FUNGHI PIE',
-          price: '$28.00',
-          image: 'https://images.unsplash.com/photo-1574071318508-1cdbab80d002'
-        },
-        quantity: 1,
-        isGlutenFree: false,
-        extraToppings: { extraCheese: false, extraMeat: true, extraVeg: true },
-        totalPrice: '34.50',
-        customerInfo: {
-          name: 'Mike Davis',
-          phone: '(555) 456-7890',
-          address: '789 Pine St, Village'
-        },
-        status: 'out-for-delivery',
-        createdAt: new Date(Date.now() - 45 * 60000).toISOString(), // 45 minutes ago
-        updatedAt: new Date(Date.now() - 2 * 60000).toISOString()
-      }
-    ];
 
-    // Demo featured items
-    const demoFeaturedItems = [
-      {
-        id: 1,
-        name: "PEPPERONI PIE",
-        price: "$28.00",
-        rating: "95%",
-        reviews: "(452)",
-        badge: "#1 Most liked",
-        image: "https://images.pexels.com/photos/5175556/pexels-photo-5175556.jpeg",
-        description: "Lunch size pizza - feeds one hungry pizza lover - our pepperoni: red sauce, 48 pepperonis",
-        ingredients: ["Red sauce", "Mozzarella cheese", "Pepperoni", "Italian herbs"],
-        category: "pizza",
-        isActive: true
-      },
-      {
-        id: 2,
-        name: "FORMAGGIO PIE",
-        price: "$21.00",
-        rating: "95%",
-        reviews: "(280)",
-        badge: "#3 Most liked",
-        image: "https://images.unsplash.com/photo-1513104890138-7c749659a591",
-        description: "Classic cheese pizza with our signature red sauce and premium mozzarella cheese",
-        ingredients: ["Red sauce", "Premium mozzarella cheese", "Italian herbs", "Olive oil"],
-        category: "pizza",
-        isActive: true
-      },
-      {
-        id: 3,
-        name: "FUNGHI PIE",
-        price: "$28.00",
-        rating: "96%",
-        reviews: "(331)",
-        badge: "#2 Most liked",
-        image: "https://images.unsplash.com/photo-1574071318508-1cdbab80d002",
-        description: "Mushroom lover's dream with fresh mushrooms, mozzarella, and our signature red sauce",
-        ingredients: ["Red sauce", "Mozzarella cheese", "Fresh mushrooms", "Italian herbs", "Garlic"],
-        category: "pizza",
-        isActive: true
-      }
-    ];
-
-    // Demo pizza menu
-    const demoPizzaMenu = demoFeaturedItems; // Same as featured items for demo
-
-    // Demo toppings
-    const demoToppings = [
-      {
-        id: 'demo-pepperoni',
-        name: 'Pepperoni',
-        quantities: {
-          normal: { price: 2.50, label: 'Normal' },
-          extra: { price: 3.75, label: 'Extra' },
-          double: { price: 5.00, label: 'Double' }
-        },
-        isActive: true
-      },
-      {
-        id: 'demo-mushrooms',
-        name: 'Mushrooms',
-        quantities: {
-          normal: { price: 1.75, label: 'Normal' },
-          extra: { price: 2.50, label: 'Extra' },
-          double: { price: 3.50, label: 'Double' }
-        },
-        isActive: true
-      }
-    ];
-
-    // Demo extra toppings
-    const demoExtraToppings = {
-      extraCheese: { name: 'Extra Cheese', price: 3.00, isActive: true },
-      extraMeat: { name: 'Extra Meat', price: 4.00, isActive: true },
-      extraVeg: { name: 'Extra Vegetables', price: 2.50, isActive: true }
-    };
-
-    // Set demo data
-    setOrders(demoOrders);
-    setFeaturedItems(demoFeaturedItems);
-    setPizzaMenu(demoPizzaMenu);
-    setToppings(demoToppings);
-    setExtraToppings(demoExtraToppings);
-  };
 
   const addNotification = (message, type) => {
     const notification = {
@@ -385,12 +216,7 @@ const AdminDashboard = () => {
     <div className="admin-dashboard">
       <div className="admin-header">
         <h1 className="admin-title">🍕 Gioia Pizzeria - Admin Dashboard</h1>
-        {isDemoMode && (
-          <div className="demo-mode-indicator">
-            <span className="demo-icon">🔧</span>
-            <span>Demo Mode - Showing Sample Data (Deploy Backend for Real Orders)</span>
-          </div>
-        )}
+
         <div className="admin-stats">
           <div className="stat-item">
             <span className="stat-number">{orders.length}</span>

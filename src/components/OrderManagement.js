@@ -41,19 +41,13 @@ const OrderManagement = ({ orders, onStatusUpdate, onNotification }) => {
     return `${Math.floor(diffInHours / 24)}d ago`;
   };
 
-  // Check if we have demo orders
-  const hasDemoOrders = orders.some(order => order.id.startsWith('ORD-DEMO'));
+
 
   return (
     <div className="order-management">
       <div className="order-header">
         <h2>Order Management</h2>
-        {hasDemoOrders && (
-          <div className="demo-orders-note">
-            <span>📝</span>
-            <span>Showing sample orders - Deploy backend to see real customer orders</span>
-          </div>
-        )}
+
         <div className="order-filters">
           <select 
             value={filterStatus} 
