@@ -71,9 +71,10 @@ const FeaturedItemsManagement = ({ items, onItemsUpdate, onNotification }) => {
     e.preventDefault();
     
     try {
+      const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:5000';
       const url = editingItem 
-        ? `http://localhost:5000/api/featured-items/${editingItem.id}`
-        : 'http://localhost:5000/api/featured-items';
+        ? `${apiUrl}/api/featured-items/${editingItem.id}`
+        : `${apiUrl}/api/featured-items`;
       
       const method = editingItem ? 'PUT' : 'POST';
       
@@ -104,7 +105,8 @@ const FeaturedItemsManagement = ({ items, onItemsUpdate, onNotification }) => {
   const handleDelete = async (id) => {
     if (window.confirm('Are you sure you want to delete this featured item?')) {
       try {
-        const response = await fetch(`http://localhost:5000/api/featured-items/${id}`, {
+        const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+        const response = await fetch(`${apiUrl}/api/featured-items/${id}`, {
           method: 'DELETE',
         });
 
@@ -123,7 +125,8 @@ const FeaturedItemsManagement = ({ items, onItemsUpdate, onNotification }) => {
 
   const toggleActive = async (item) => {
     try {
-      const response = await fetch(`http://localhost:5000/api/featured-items/${item.id}`, {
+      const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+      const response = await fetch(`${apiUrl}/api/featured-items/${item.id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

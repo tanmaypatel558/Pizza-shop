@@ -115,7 +115,8 @@ const ToppingsManagement = ({ toppings, onToppingsUpdate, onNotification, isExtr
           };
         }
 
-        const response = await fetch('http://localhost:5000/api/extra-toppings', {
+        const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+        const response = await fetch(`${apiUrl}/api/extra-toppings`, {
           method: 'PUT',
           headers: {
             'Content-Type': 'application/json',
@@ -142,9 +143,10 @@ const ToppingsManagement = ({ toppings, onToppingsUpdate, onNotification, isExtr
           isActive: formData.isActive
         };
 
+        const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:5000';
         const url = editingTopping 
-          ? `http://localhost:5000/api/toppings/${editingTopping.id}`
-          : 'http://localhost:5000/api/toppings';
+          ? `${apiUrl}/api/toppings/${editingTopping.id}`
+          : `${apiUrl}/api/toppings`;
         
         const method = editingTopping ? 'PUT' : 'POST';
 

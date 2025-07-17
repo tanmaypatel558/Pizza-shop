@@ -15,89 +15,128 @@ const AdminDashboard = () => {
   const [toppings, setToppings] = useState([]);
   const [extraToppings, setExtraToppings] = useState({});
   const [notifications, setNotifications] = useState([]);
+  const [isDemoMode, setIsDemoMode] = useState(false);
 
   useEffect(() => {
+    // Check if we're in demo mode (production without backend)
+    const isProduction = process.env.NODE_ENV === 'production';
+    const hasApiUrl = process.env.REACT_APP_API_URL;
+    
+    if (isProduction && !hasApiUrl) {
+      setIsDemoMode(true);
+      addNotification('Admin Dashboard is in demo mode - backend not connected', 'info');
+      return;
+    }
+
     // Initialize socket connection
     const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:5000';
-    const socketConnection = io(apiUrl);
+    
+    try {
+      const socketConnection = io(apiUrl);
 
-    // Join admin room for real-time updates
-    socketConnection.emit('join-admin');
+      // Join admin room for real-time updates
+      socketConnection.emit('join-admin');
 
-    // Listen for real-time order updates
-    socketConnection.on('new-order', (order) => {
-      setOrders(prevOrders => [order, ...prevOrders]);
-      addNotification(`New order received: ${order.pizza.name}`, 'success');
-    });
+      // Listen for real-time order updates
+      socketConnection.on('new-order', (order) => {
+        setOrders(prevOrders => [order, ...prevOrders]);
+        addNotification(`New order received: ${order.pizza.name}`, 'success');
+      });
 
-    socketConnection.on('order-status-updated', (updatedOrder) => {
-      setOrders(prevOrders => 
-        prevOrders.map(order => 
-          order.id === updatedOrder.id ? updatedOrder : order
-        )
-      );
-      addNotification(`Order ${updatedOrder.id.substring(0, 8)} status updated to ${updatedOrder.status}`, 'info');
-    });
+      socketConnection.on('order-status-updated', (updatedOrder) => {
+        setOrders(prevOrders => 
+          prevOrders.map(order => 
+            order.id === updatedOrder.id ? updatedOrder : order
+          )
+        );
+        addNotification(`Order ${updatedOrder.id.substring(0, 8)} status updated to ${updatedOrder.status}`, 'info');
+      });
 
-    // Load initial data
-    loadOrders();
-    loadFeaturedItems();
-    loadPizzaMenu();
-    loadToppings();
-    loadExtraToppings();
+      // Load initial data
+      loadOrders();
+      loadFeaturedItems();
+      loadPizzaMenu();
+      loadToppings();
+      loadExtraToppings();
 
-    return () => {
-      socketConnection.disconnect();
-    };
+      return () => {
+        socketConnection.disconnect();
+      };
+    } catch (error) {
+      console.error('Socket connection failed:', error);
+      addNotification('Real-time updates unavailable', 'error');
+      
+      // Still try to load data
+      loadOrders();
+      loadFeaturedItems();
+      loadPizzaMenu();
+      loadToppings();
+      loadExtraToppings();
+    }
   }, []);
 
   const loadOrders = async () => {
     try {
-      const response = await fetch('http://localhost:5000/api/orders');
+      const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+      const response = await fetch(`${apiUrl}/api/orders`);
       const data = await response.json();
       setOrders(data);
     } catch (error) {
       console.error('Error loading orders:', error);
+      // Set empty array for production mode
+      setOrders([]);
     }
   };
 
   const loadFeaturedItems = async () => {
     try {
-      const response = await fetch('http://localhost:5000/api/featured-items');
+      const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+      const response = await fetch(`${apiUrl}/api/featured-items`);
       const data = await response.json();
       setFeaturedItems(data);
     } catch (error) {
       console.error('Error loading featured items:', error);
+      // Set empty array for production mode
+      setFeaturedItems([]);
     }
   };
 
   const loadPizzaMenu = async () => {
     try {
-      const response = await fetch('http://localhost:5000/api/pizza-menu');
+      const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+      const response = await fetch(`${apiUrl}/api/pizza-menu`);
       const data = await response.json();
       setPizzaMenu(data);
     } catch (error) {
       console.error('Error loading pizza menu:', error);
+      // Set empty array for production mode
+      setPizzaMenu([]);
     }
   };
 
   const loadToppings = async () => {
     try {
-      const response = await fetch('http://localhost:5000/api/toppings');
+      const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+      const response = await fetch(`${apiUrl}/api/toppings`);
       const data = await response.json();
       setToppings(data);
     } catch (error) {
       console.error('Error loading toppings:', error);
+      // Set empty array for production mode
+      setToppings([]);
     }
   };
 
   const loadExtraToppings = async () => {
     try {
-      const response = await fetch('http://localhost:5000/api/extra-toppings');
+      const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+      const response = await fetch(`${apiUrl}/api/extra-toppings`);
       const data = await response.json();
       setExtraToppings(data);
     } catch (error) {
       console.error('Error loading extra toppings:', error);
+      // Set empty object for production mode
+      setExtraToppings({});
     }
   };
 
@@ -118,7 +157,8 @@ const AdminDashboard = () => {
 
   const updateOrderStatus = async (orderId, newStatus) => {
     try {
-      const response = await fetch(`http://localhost:5000/api/orders/${orderId}/status`, {
+      const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+      const response = await fetch(`${apiUrl}/api/orders/${orderId}/status`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -189,6 +229,12 @@ const AdminDashboard = () => {
     <div className="admin-dashboard">
       <div className="admin-header">
         <h1 className="admin-title">🍕 Gioia Pizzeria - Admin Dashboard</h1>
+        {isDemoMode && (
+          <div className="demo-mode-indicator">
+            <span className="demo-icon">🔧</span>
+            <span>Demo Mode - Backend Not Connected</span>
+          </div>
+        )}
         <div className="admin-stats">
           <div className="stat-item">
             <span className="stat-number">{orders.length}</span>
