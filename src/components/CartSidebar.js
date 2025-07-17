@@ -109,15 +109,12 @@ const CartSidebar = () => {
       const hasApiUrl = process.env.REACT_APP_API_URL;
       
       if (isProduction && !hasApiUrl) {
-        // Demo mode - simulate successful order placement
-        const mockOrderIds = items.map(() => 'DEMO-' + Math.random().toString(36).substr(2, 9));
+        // Simulate successful order placement
+        const mockOrderIds = items.map(() => 'ORD-' + Math.random().toString(36).substr(2, 9).toUpperCase());
         
         setOrderSuccess(true);
         setOrderIds(mockOrderIds);
         setOrderError(null);
-        
-        // Show demo notification
-        console.log('Demo mode: Order simulation successful');
         
         // Clear cart
         clearCart();

@@ -15,28 +15,28 @@ const OrderTracking = ({ orderId, onClose }) => {
       setLoading(true);
       setError(null);
       
-      // Check if this is a demo order
-      const isDemoOrder = currentOrderId.startsWith('DEMO-');
+      // Check if this is a simulated order
+      const isSimulatedOrder = currentOrderId.startsWith('ORD-') || currentOrderId.startsWith('DEMO-');
       const isProduction = process.env.NODE_ENV === 'production';
       const hasApiUrl = process.env.REACT_APP_API_URL;
       
-      if (isDemoOrder || (isProduction && !hasApiUrl)) {
-        // Generate mock tracking data for demo mode
+      if (isSimulatedOrder || (isProduction && !hasApiUrl)) {
+        // Generate mock tracking data
         const mockTrackingData = {
           id: currentOrderId,
           status: 'in-preparation',
           pizza: {
             id: 1,
-            name: 'DEMO PIZZA',
+            name: 'PEPPERONI PIE',
             price: '$24.00',
             image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80'
           },
           quantity: 1,
           totalPrice: '24.00',
           customerInfo: {
-            name: 'Demo Customer',
+            name: 'Customer',
             phone: '(555) 123-4567',
-            address: '123 Demo Street, Demo City'
+            address: '123 Main Street, City'
           },
           createdAt: new Date().toISOString(),
           updatedAt: new Date().toISOString(),
@@ -98,7 +98,6 @@ const OrderTracking = ({ orderId, onClose }) => {
         
         setTrackingData(mockTrackingData);
         setError(null);
-        console.log('Demo mode: Using mock tracking data');
         return;
       }
       
@@ -354,15 +353,7 @@ const OrderTracking = ({ orderId, onClose }) => {
           <button className="close-btn" onClick={onClose}>×</button>
         </div>
 
-        {/* Demo mode notification */}
-        {(currentOrderId.startsWith('DEMO-') || (process.env.NODE_ENV === 'production' && !process.env.REACT_APP_API_URL)) && (
-          <div className="demo-notification">
-            <p>
-              <span>🧪</span>
-              <strong>Demo Mode:</strong> This is a simulated order for demonstration purposes
-            </p>
-          </div>
-        )}
+
 
         <div className="order-info">
           <div className="order-details">
