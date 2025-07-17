@@ -138,7 +138,7 @@ const FeaturedItems = () => {
       
       // Increase timeout and add retry logic
       const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 5000); // 5 second timeout for production
+      const timeoutId = setTimeout(() => controller.abort(), 3000); // Reduced timeout to 3 seconds
       
       const response = await fetch(`${apiUrl}/api/featured-items`, {
         signal: controller.signal,
@@ -164,16 +164,11 @@ const FeaturedItems = () => {
     } catch (error) {
       console.error('Error fetching featured items:', error);
       
-      // Use fallback data in production, show error in development
-      if (process.env.NODE_ENV === 'production') {
-        console.log('Using fallback data due to connection error');
-        setFeaturedItems(productionFallbackItems);
-        setUsingFallback(true);
-        setError(null);
-      } else {
-        setError('Unable to load featured items. Please check your connection and try again.');
-        setFeaturedItems([]);
-      }
+      // Always use fallback data when backend is not available
+      console.log('Backend not available, using fallback data');
+      setFeaturedItems(productionFallbackItems);
+      setUsingFallback(true);
+      setError(null); // Clear error since we have fallback data
     } finally {
       setLoading(false);
     }
@@ -252,13 +247,6 @@ const FeaturedItems = () => {
         </div>
       </div>
       
-      {/* Show fallback notification only in production */}
-      {usingFallback && (
-        <div className="fallback-notification">
-          <p>🍕 Showing menu items - Full functionality with backend coming soon!</p>
-        </div>
-      )}
-      
       {/* Filter Buttons */}
       <div className="filter-container">
         <div className="filter-buttons">
@@ -281,9 +269,7 @@ const FeaturedItems = () => {
           <div className="no-items">
             <h3>No items found</h3>
             <p>No {selectedFilter === 'all' ? '' : selectedFilter + ' '}items are currently available.</p>
-            <button onClick={handleRetry} className="retry-btn">
-              Refresh Items
-            </button>
+            <p>Try selecting a different category above.</p>
           </div>
         ) : (
           filteredItems.map((item) => (
