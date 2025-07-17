@@ -18,7 +18,13 @@ The error "Unable to process your order at this time. Please try again later or 
 - ✅ Generates mock order IDs for tracking
 - ✅ Provides seamless mobile experience
 
-### 3. **Improved Error Handling**
+### 3. **Order Tracking Fix**
+- ✅ Fixed "unable to connect to order tracking service" error
+- ✅ Added demo mode support for order tracking
+- ✅ Mock tracking data with realistic order progress
+- ✅ Demo mode notification for transparency
+
+### 4. **Improved Error Handling**
 - ✅ Better error messages for different scenarios
 - ✅ Graceful fallback when backend is unavailable
 - ✅ Production-ready error handling
@@ -63,6 +69,7 @@ Your website now works on mobile even without backend deployment!
 3. Fill in customer information
 4. Place order
 5. Should see "Order Placed Successfully!" with demo IDs
+6. Click to track order - should show demo tracking with progress
 
 ### Test Full Mode (After Backend Deployment):
 1. Same steps as above
@@ -79,6 +86,7 @@ Your website now works on mobile even without backend deployment!
 - `src/components/OrdersStatusToggle.js` - Fixed API URLs  
 - `src/components/PizzaMenuManagement.js` - Fixed API URLs
 - `src/components/CartSidebar.js` - Added demo mode fallback
+- `src/components/OrderTracking.js` - Added demo mode tracking
 
 ### Environment Variables:
 - `REACT_APP_API_URL` - Backend URL for production
@@ -118,6 +126,7 @@ If automatic deployment fails:
 ## 🎯 Current Status
 
 ✅ **Mobile Orders**: Working with demo mode  
+✅ **Order Tracking**: Working with demo mode  
 ✅ **Responsive Design**: Fixed for all devices  
 ✅ **Error Handling**: User-friendly messages  
 ✅ **Backend Ready**: Configured for deployment  
